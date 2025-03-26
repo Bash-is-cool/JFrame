@@ -1,26 +1,39 @@
-package Main;
+package main;
+
+import entity.Player;
+import object.SuperObject;
+import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
     final int originalTileSize = 16; // 16x16 tile
     final int scale = 3;
 
-    final int tileSize = originalTileSize * scale; // 48*48 tile
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol; // 786 pixels
-    final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+    public final int tileSize = originalTileSize * scale; // 48*48 tile
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize * maxScreenCol; // 786 pixels
+    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
+    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
+    public CollisionChecker cChecker = new CollisionChecker(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
+    public Player player = new Player(this, keyH);
+    public SuperObject[] obj = new SuperObject[10];
 
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    // WORLD SETTINGS
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
+    // FPS
     int FPS = 60;
 
     public GamePanel() {
@@ -29,6 +42,10 @@ public class GamePanel extends JPanel implements Runnable {
         setDoubleBuffered(true);
         addKeyListener(keyH);
         setFocusable(true);
+    }
+
+    public void setupGame() {
+        assetSetter.setObject();
     }
 
     public void startGameThread() {
@@ -96,15 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if(keyH.upPressed) {
-            playerY -= playerSpeed;
-        } else if(keyH.downPressed) {
-            playerY += playerSpeed;
-        } else if(keyH.leftPressed) {
-            playerX -= playerSpeed;
-        } else if (keyH.rightPressed) {
-            playerX += playerSpeed;
-        }
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -112,9 +121,18 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(Color.WHITE);
+        // TILE
+        tileM.draw(g2);
 
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        // OBJECT
+        for(int i = 0; i < obj.length; i++) {
+            if(obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
+
+        // PLAYER
+        player.draw(g2);
 
         g2.dispose();
     }
