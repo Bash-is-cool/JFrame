@@ -26,23 +26,28 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setAction() {
-        Random random = new Random();
-        int i = random.nextInt(100) + 1; // pick a number from 1 to 100
+        actionLockCounter++;
 
-        if(i < 26) {
-            direction = "up";
-        }
+        if(actionLockCounter == 100) {
+            Random random = new Random();
+            int i = random.nextInt(100) + 1; // pick a number from 1 to 100
 
-        if(i > 25  && i < 51) {
-            direction = "down";
-        }
+            if (i < 26) {
+                direction = "up";
+            }
 
-        if(i > 49 && i < 76) {
-            direction = "left";
-        }
+            if (i > 25 && i < 51) {
+                direction = "down";
+            }
 
-        if(i > 75 && i < 101) {
-            direction = "right";
+            if (i > 49 && i < 76) {
+                direction = "left";
+            }
+
+            if (i > 75 && i < 101) {
+                direction = "right";
+            }
+            actionLockCounter = 0;
         }
     }
 }

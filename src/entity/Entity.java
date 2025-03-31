@@ -23,6 +23,7 @@ public class Entity  {
     public int solidAreaDefaultX;
     public int solidAreaDefaultY;
     public boolean collisionOn = false;
+    public int actionLockCounter = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
