@@ -7,7 +7,6 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
@@ -38,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
@@ -117,11 +117,11 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount++;
             }
 
-            if(timer >= 1000000000) {
+            /*if(timer >= 1000000000) {
                 System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
-            }
+            }*/
         }
     }
 
