@@ -73,6 +73,11 @@ public class Player extends Entity {
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
+            // CHECK EVENT
+            gp.eventHandler.checkEvent();
+
+            gp.keyH.enterPressed = false;
+
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if(collisionOn == false) {
                 switch (direction) {
@@ -149,12 +154,11 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
         if(i != 999) {
-            if(gp.keyH.enterPressed == true) {
+            if(gp.keyH.enterPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.enterPressed = false;
     }
 
     public void draw(Graphics2D g2) {
