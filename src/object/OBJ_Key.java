@@ -14,6 +14,6 @@ public class OBJ_Key extends Entity {
         this.gp = gp;
 
         name = "Key";
-        down1 = setup("/objects/key.png");
+        down1 = setup("/objects/key.png", gp.tileSize, gp.tileSize);
     }
 }
