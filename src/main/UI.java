@@ -15,7 +15,6 @@ public class UI {
     BufferedImage heart_full, heart_half, heart_blank;
     public boolean messageOn = false;
     public String message = "";
-    int messageCounter = 0;
     public boolean gameFinished = false;
     public String currentDialogue;
     public int commandNum = 0;
@@ -29,9 +28,7 @@ public class UI {
              maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
              is = getClass().getResourceAsStream("/font/Purisa Bold.ttf");
              purisaB = Font.createFont(Font.TRUETYPE_FONT, is);
-         } catch (FontFormatException e) {
-             e.printStackTrace();
-         } catch (IOException e) {
+         } catch (FontFormatException | IOException e) {
              e.printStackTrace();
          }
 
@@ -166,7 +163,7 @@ public class UI {
          g2.drawString(value, textX, textY);
          textY += lineHeight;
 
-         value = String.valueOf(gp.player.life + "/" + gp.player.maxLife);
+         value = gp.player.life + "/" + gp.player.maxLife;
          textX = getXForAlignToRightText(value, tailX);
          g2.drawString(value, textX, textY);
          textY += lineHeight;
@@ -213,14 +210,12 @@ public class UI {
 
      public int getXForCenteredText(String text) {
          int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-         int x = gp.screenWidth / 2 - length / 2;
-         return x;
+         return gp.screenWidth / 2 - length / 2;
      }
 
     public int getXForAlignToRightText(String text, int tailX) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = tailX - length;
-        return x;
+        return tailX - length;
     }
 
      public void drawDialogueScreen() {
@@ -282,7 +277,7 @@ public class UI {
 
              text = "NEW GAME";
              x = getXForCenteredText(text);
-             y += gp.tileSize * 3.5;
+             y += (int) (gp.tileSize * 3.5);
              g2.drawString(text, x, y);
              if (commandNum == 0) {
                  g2.drawString(">", x - gp.tileSize, y);

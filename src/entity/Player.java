@@ -43,8 +43,6 @@ public class Player extends Entity {
     public void setDefault() {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
-//      worldX = gp.tileSize * 10;
-//      worldY = gp.tileSize * 13;
 
         speed = 4;
         direction = "down";
@@ -76,7 +74,15 @@ public class Player extends Entity {
         if (attacking) {
             attacking();
         } else if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
-            if (keyH.upPressed) {
+            if (keyH.upPressed && keyH.leftPressed) {
+                direction = "upLeft";
+            } else if (keyH.upPressed && keyH.rightPressed) {
+                direction = "upRight";
+            } else if (keyH.downPressed && keyH.leftPressed) {
+                direction = "downLeft";
+            } else if (keyH.downPressed && keyH.rightPressed) {
+                direction = "downRight";
+            } else if (keyH.upPressed) {
                 direction = "up";
             } else if (keyH.downPressed) {
                 direction = "down";
@@ -93,7 +99,7 @@ public class Player extends Entity {
             // CHECK OBJECT COLLISION
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
-            
+
             // CHECK NPC COLLISION
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
@@ -119,6 +125,22 @@ public class Player extends Entity {
                         break;
                     case "right":
                         worldX += speed;
+                        break;
+                    case "upLeft":
+                        worldX -= speed;
+                        worldY -= speed;
+                        break;
+                    case "upRight":
+                        worldX += speed;
+                        worldY -= speed;
+                        break;
+                    case "downLeft":
+                        worldX -= speed;
+                        worldY += speed;
+                        break;
+                    case "downRight":
+                        worldX += speed;
+                        worldY += speed;
                         break;
                 }
             }
@@ -277,10 +299,6 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        //g2.setColor(Color.WHITE);
-
-        //g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-
         BufferedImage image = null;
         int tempScreenX = screenX;
         int tempScreenY = screenY;
@@ -330,6 +348,52 @@ public class Player extends Entity {
                 if(attacking) {
                     if (spriteNum == 1) {image = attackRight1;}
                     if (spriteNum == 2) {image = attackRight2;}
+                }
+                break;
+            case "upLeft":
+                if(!attacking) {
+                    if (spriteNum == 1) {image = up1;}
+                    if (spriteNum == 2) {image = up2;}
+                }
+
+                if(attacking) {
+                    tempScreenY = screenY - gp.tileSize;
+                    if (spriteNum == 1) {image = attackUp1;}
+                    if (spriteNum == 2) {image = attackUp2;}
+                }
+                break;
+            case "downLeft":
+                if(!attacking) {
+                    if (spriteNum == 1) {image = down1;}
+                    if (spriteNum == 2) {image = down2;}
+                }
+
+                if(attacking) {
+                    if (spriteNum == 1) {image = attackDown1;}
+                    if (spriteNum == 2) {image = attackDown2;}
+                }
+                break;
+            case "upRight":
+                if(!attacking) {
+                    if (spriteNum == 1) {image = up1;}
+                    if (spriteNum == 2) {image = up2;}
+                }
+
+                if(attacking) {
+                    tempScreenY = screenY - gp.tileSize;
+                    if (spriteNum == 1) {image = attackUp1;}
+                    if (spriteNum == 2) {image = attackUp2;}
+                }
+                break;
+            case "downRight":
+                if(!attacking) {
+                    if (spriteNum == 1) {image = down1;}
+                    if (spriteNum == 2) {image = down2;}
+                }
+
+                if(attacking) {
+                    if (spriteNum == 1) {image = attackDown1;}
+                    if (spriteNum == 2) {image = attackDown2;}
                 }
                 break;
         }

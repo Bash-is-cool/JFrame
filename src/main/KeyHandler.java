@@ -144,19 +144,11 @@ public class KeyHandler implements KeyListener {
 
         // DEBUG
         if (code == KeyEvent.VK_T) {
-            if (!checkDrawTime) {
-                checkDrawTime = true;
-            } else if (checkDrawTime) {
-                checkDrawTime = false;
-            }
+            checkDrawTime = !checkDrawTime;
         }
 
         if (code == KeyEvent.VK_B) {
-            if (!hitBox) {
-                hitBox = true;
-            } else if (hitBox) {
-                hitBox = false;
-            }
+            hitBox = !hitBox;
         }
 
         if(code == KeyEvent.VK_ENTER) {

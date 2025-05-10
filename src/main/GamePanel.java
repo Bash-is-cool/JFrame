@@ -7,7 +7,6 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -104,24 +103,20 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
+        double drawInterval = (double) 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        long timer = 0;
-        int drawCount = 0;
 
         while(gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
-            timer += (currentTime - lastTime);
             lastTime = currentTime;
 
             if(delta >= 1) {
                 update();
                 repaint();
                 delta--;
-                drawCount++;
             }
 
             /*if(timer >= 1000000000) {
@@ -137,9 +132,9 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
 
             // NPC
-            for(int i = 0; i < npc.length; i++) {
-                if(npc[i] != null) {
-                    npc[i].update();
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entity.update();
                 }
             }
 
@@ -179,36 +174,30 @@ public class GamePanel extends JPanel implements Runnable {
             // ADD ENTITIES TO THE LIST
             entityList.add(player);
 
-            for(int i = 0; i < npc.length; i++) {
-                if(npc[i] != null) {
-                    entityList.add(npc[i]);
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
 
-            for(int i = 0; i < obj.length; i++) {
-                if(obj[i] != null) {
-                    entityList.add(obj[i]);
+            for (Entity entity : obj) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
 
-            for(int i = 0; i < monster.length; i++) {
-                if(monster[i] != null) {
-                    entityList.add(monster[i]);
+            for (Entity entity : monster) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
 
             // SORT
-            Collections.sort(entityList, new Comparator<Entity>() {
-                @Override
-                public int compare(Entity e1, Entity e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
+            entityList.sort(Comparator.comparingInt(e -> e.worldY));
 
             // DRAW ENTITIES
-            for(int i = 0; i < entityList.size(); i++) {
-                entityList.get(i).draw(g2);
+            for (Entity entity : entityList) {
+                entity.draw(g2);
             }
             // EMPTY ENTITY LIST
             entityList.clear();
