@@ -28,7 +28,7 @@ public class Entity  {
     int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
-    boolean attack = false;
+    boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
@@ -46,6 +46,20 @@ public class Entity  {
     public int type; // 0 = player, 1 = npc. 2 = monster
     public int speed;
     public String name;
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int defense;
+    public int exp;
+    public int nextLevelExp;
+    public int coin;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    // ITEM ATTRIBUTES
+    public int attackValue;
+    public int defenseValue;
 
 
     public Entity(GamePanel gp) {
