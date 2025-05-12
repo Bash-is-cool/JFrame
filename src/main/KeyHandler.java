@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
-
+    long lastEnterPressed;
+    long enterCooldown = 500;
     // DEBUG
     boolean checkDrawTime = false;
     public boolean hitBox = false;
@@ -49,6 +50,7 @@ public class KeyHandler implements KeyListener {
     }
 
     public void titleState(int code) {
+        long time = System.currentTimeMillis();
         if(gp.ui.titleScreenState == 0) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 gp.ui.commandNum--;
@@ -66,7 +68,7 @@ public class KeyHandler implements KeyListener {
                 }
             }
 
-            if (code == KeyEvent.VK_ENTER) {
+            if (code == KeyEvent.VK_ENTER && checkEnter(time)) {
                 switch (gp.ui.commandNum) {
                     case 0:
                         gp.ui.titleScreenState = 1;
@@ -94,7 +96,7 @@ public class KeyHandler implements KeyListener {
                 }
             }
 
-            if (code == KeyEvent.VK_ENTER) {
+            if (code == KeyEvent.VK_ENTER && checkEnter(time)) {
                 switch (gp.ui.commandNum) {
                     case 0:
                         gp.playMusic(0);
@@ -118,6 +120,7 @@ public class KeyHandler implements KeyListener {
     }
 
     public void playState(int code) {
+        long time = System.currentTimeMillis();
         if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             upPressed = true;
         }
@@ -151,7 +154,7 @@ public class KeyHandler implements KeyListener {
             hitBox = !hitBox;
         }
 
-        if(code == KeyEvent.VK_ENTER) {
+        if(code == KeyEvent.VK_ENTER && checkEnter(time)) {
             enterPressed = true;
         }
     }
@@ -163,7 +166,8 @@ public class KeyHandler implements KeyListener {
     }
 
     public void dialogueState(int code) {
-        if(code == KeyEvent.VK_ENTER) {
+        long time = System.currentTimeMillis();
+        if(code == KeyEvent.VK_ENTER && checkEnter(time)) {
             gp.gameState = gp.playState;
         }
     }
@@ -193,5 +197,13 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             leftPressed = false;
         }
+    }
+
+    public boolean checkEnter(long time) {
+        if(time - lastEnterPressed >= enterCooldown) {
+            lastEnterPressed = time;
+            return true;
+        }
+        return false;
     }
 }

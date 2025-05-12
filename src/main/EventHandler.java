@@ -43,7 +43,7 @@ public class EventHandler {
 
         if(canTouchEvent) {
             if (hit(27, 16, "right")) damagePit(27, 16, gp.dialogueState);
-            if (hit(23, 16, "any")) damagePit(27, 16, gp.dialogueState);
+            if (hit(23, 16, "any")) damagePit(23, 16, gp.dialogueState);
             if (hit(23, 12, "up")) healPool(23, 12, gp.dialogueState);
         }
     }

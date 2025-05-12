@@ -127,20 +127,20 @@ public class Player extends Entity {
                         worldX += speed;
                         break;
                     case "upLeft":
-                        worldX -= speed;
-                        worldY -= speed;
+                        worldX -= (int) (speed / Math.sqrt(2));
+                        worldY -= (int) (speed / Math.sqrt(2));
                         break;
                     case "upRight":
-                        worldX += speed;
-                        worldY -= speed;
+                        worldX += (int) (speed / Math.sqrt(2));
+                        worldY -= (int) (speed / Math.sqrt(2));
                         break;
                     case "downLeft":
-                        worldX -= speed;
-                        worldY += speed;
+                        worldX -= (int) (speed / Math.sqrt(2));
+                        worldY += (int) (speed / Math.sqrt(2));
                         break;
                     case "downRight":
-                        worldX += speed;
-                        worldY += speed;
+                        worldX += (int) (speed / Math.sqrt(2));
+                        worldY += (int) (speed / Math.sqrt(2));
                         break;
                 }
             }
@@ -235,7 +235,6 @@ public class Player extends Entity {
                     hasKey++;
                     gp.obj[i] = null;
                     System.out.println("Key: " + hasKey);
-                    gp.ui.showMessage("You got a Key!");
                     break;
                 case "Door":
                     if(hasKey > 0) {
@@ -243,16 +242,13 @@ public class Player extends Entity {
                         gp.obj[i] = null;
                         hasKey--;
                         System.out.println("Key: " + hasKey);
-                        gp.ui.showMessage("You opened the door!");
                     } else {
-                        gp.ui.showMessage("You need a Key!");
                     }
                     break;
                 case "Boots":
                     gp.playSE(3);
                     speed += 2;
                     gp.obj[i] = null;
-                    gp.ui.showMessage("Speed Up!");
                     break;
                 case "Chest":
                     gp.ui.gameFinished = true;
@@ -294,13 +290,34 @@ public class Player extends Entity {
                 if(damage < 0)
                     damage = 0;
                 gp.monster[i].life -= damage;
+                gp.ui.addMessage(damage + " damage!");
+
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
                 if(gp.monster[i].life < 1) {
                     gp.monster[i].dying = true;
+                    gp.ui.addMessage("Killed the " + gp.monster[i].name + "!");
+                    gp.ui.addMessage("Exp +" + gp.monster[i].exp);
+                    exp += gp.monster[i].exp;
+                    checkLevelUp();
                 }
             }
+        }
+    }
+
+    public void checkLevelUp() {
+        if(exp >= nextLevelExp) {
+            level++;
+            nextLevelExp *= 2;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+            gp.playSE(8);
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue = "You are level " + level + " now!\n" + "You feel stronger!";
         }
     }
 
