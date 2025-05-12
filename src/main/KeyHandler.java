@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -11,6 +12,8 @@ public class KeyHandler implements KeyListener {
     // DEBUG
     boolean checkDrawTime = false;
     public boolean hitBox = false;
+    public boolean click = false;
+    Graphics2D g2;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -79,6 +82,11 @@ public class KeyHandler implements KeyListener {
                         System.exit(0);
                 }
             }
+
+            if(code == KeyEvent.VK_B) {
+                gp.keyH.click = !gp.keyH.click;
+                gp.ui.draw(g2);
+            }
         } else if(gp.ui.titleScreenState == 1) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 gp.ui.commandNum--;
@@ -116,6 +124,11 @@ public class KeyHandler implements KeyListener {
                         break;
                 }
             }
+        }
+
+        if(code == KeyEvent.VK_B) {
+            gp.keyH.click = !gp.keyH.click;
+            gp.ui.draw(g2);
         }
     }
 

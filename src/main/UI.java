@@ -71,6 +71,17 @@ public class UI {
 
          if(gp.gameState == gp.titleState) {
              drawTitleScreen();
+             if (gp.keyH.click && gp.ui.titleScreenState == 0) {
+                 g2.setColor(Color.white);
+                 g2.drawRect(gp.newGameX, gp.newGameY, gp.newGameWidth, gp.newGameHeight);
+                 g2.drawRect(gp.loadGameX, gp.loadGameY, gp.loadGameWidth, gp.loadGameHeight);
+                 g2.drawRect(gp.quitX, gp.quitY, gp.quitWidth, gp.quitHeight);
+             } else if (gp.keyH.click && gp.ui.titleScreenState == 1) {
+                 g2.drawRect(gp.thiefX, gp.thiefY, gp.thiefWidth, gp.thiefHeight);
+                 g2.drawRect(gp.fighterX, gp.fighterY, gp.fighterWidth, gp.fighterHeight);
+                 g2.drawRect(gp.sorcererX, gp.sorcererY, gp.sorcererWidth, gp.sorcererHeight);
+                 g2.drawRect(gp.backX, gp.backY, gp.backWidth, gp.backHeight);
+             }
          }
 
          // CHARACTER STATE
