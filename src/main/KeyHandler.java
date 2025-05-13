@@ -170,6 +170,10 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_ENTER && checkEnter(time)) {
             enterPressed = true;
         }
+
+        if(code == KeyEvent.VK_R) {
+            gp.tileM.loadMap("/maps/worldV2.txt");
+        }
     }
 
     public void pauseState(int code) {
