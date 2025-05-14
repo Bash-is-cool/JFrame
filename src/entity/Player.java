@@ -16,6 +16,8 @@ public class Player extends Entity {
     int standCounter = 0;
     int hasKey = 0;
     public boolean attackCanceled = false;
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -38,6 +40,7 @@ public class Player extends Entity {
         setDefault();
         getPlayerImage();
         getPlayerAttack();
+        setItems();
     }
 
     public void setDefault() {
@@ -60,6 +63,12 @@ public class Player extends Entity {
         currentShield = new OBJ_Shield_Wood(gp);
         attack = getAttack();
         defense = getDefense();
+    }
+
+    public void setItems() {
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(new OBJ_Key(gp));
     }
 
     public int getAttack() {
