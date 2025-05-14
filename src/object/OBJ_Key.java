@@ -14,7 +14,7 @@ public class OBJ_Key extends Entity {
         this.gp = gp;
 
         name = "Key";
-        down1 = setup("/objects/key.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/objects/key", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nIt opens a door";
     }
 }

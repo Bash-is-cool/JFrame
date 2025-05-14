@@ -253,7 +253,7 @@ public class UI {
         // FRAME
         int frameX = gp.tileSize * 9;
         int frameY = gp.tileSize;
-        int frameWidth gp.tileSize * 6;
+        int frameWidth = gp.tileSize * 6;
         int frameHeight = gp.tileSize * 5;
         drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 
@@ -271,7 +271,7 @@ public class UI {
         int cursorHeight = gp.tileSize;
 
         // DRAW ITEMS
-        for(int i = 0; i < gp.player.inventory.size()) {
+        for(int i = 0; i < gp.player.inventory.size(); i++) {
             g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
             slotX += slotSize;
 

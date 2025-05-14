@@ -215,7 +215,7 @@ public class KeyHandler implements KeyListener {
             }
         }
 
-        if(code == KeyEvent.VK_D || code == KeyEvent.VK_DOWN) {
+        if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             if(gp.ui.slotCol != 4) {
                 gp.ui.slotCol++;
                 gp.playSE(9);
