@@ -291,7 +291,6 @@ public class UI {
         int dFrameY = frameY + frameHeight;
         int dFrameWidth = frameWidth;
         int dFrameHeight = gp.tileSize * 3;
-        drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
 
         // DRAW DESCRIPTION TEXT
         int textX = dFrameX + 20;
@@ -301,6 +300,7 @@ public class UI {
         int itemIndex = getItemIndexOnSlot();
         if(itemIndex < gp.player.inventory.size()) {
             for(String str : gp.player.inventory.get(itemIndex).description.split("\n")) {
+                drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
                 g2.drawString(str, textX, textY);
                 textY += 32;
             }
