@@ -36,9 +36,6 @@ public class Player extends Entity {
         solidArea.width = 32;
         solidArea.height = 32;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefault();
         getPlayerImage();
         getPlayerAttack();
@@ -74,6 +71,7 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -242,13 +240,40 @@ public class Player extends Entity {
             String text;
             if(inventory.size() != maxInventorySize) {
                 inventory.add(gp.obj[i]);
-                playSE(1);
+                gp.playSE(1);
                 text = "You got a " + gp.obj[i].name + "!";
             } else {
                 text = "You cannot carry anymore items.";
             }
             gp.ui.addMessage(text);
-            gp.obj[i] == null;
+            gp.obj[i] = null;
+        }
+    }
+
+    public void dropObject(int index) {
+        if(!collisionOn) {
+            for(int i = 0; i < gp.obj.length; i++) {
+                if(gp.obj[i] == null) {
+                    gp.obj[i] = inventory.remove(index);
+
+                    if(direction.equals("up")) {
+                        gp.obj[i].worldY = worldY - gp.tileSize;
+                    } else if(direction.equals("down")) {
+                        gp.obj[i].worldY = worldY + gp.tileSize;
+                    } else {
+                        gp.obj[i].worldY = worldY;
+                    }
+
+                    if(direction.equals("left") || direction.equals("upLeft") || direction.equals("downLeft")) {
+                        gp.obj[i].worldX = worldX - gp.tileSize;
+                    } else if(direction.equals("right") || direction.equals("upRight") || direction.equals("downRight")) {
+                        gp.obj[i].worldX = worldX + gp.tileSize;
+                    } else {
+                        gp.obj[i].worldX = worldX;
+                    }
+                    break;
+                }
+            }
         }
     }
 

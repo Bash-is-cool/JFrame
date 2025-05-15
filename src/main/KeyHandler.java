@@ -221,6 +221,7 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(9);
             }
         }
+        gp.ui.saveSlotPosition();
     }
 
     @Override

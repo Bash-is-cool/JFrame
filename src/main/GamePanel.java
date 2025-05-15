@@ -55,7 +55,12 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     // CURSOR
-    Cursor cursor, pointer;
+    Cursor pointer, clicker;
+    int mouseClickX, mouseClickY;
+    public int selectedSlotX = -1;
+    public int selectedSlotY = -1;
+    public int selectedX = -1;
+    public int selectedY = -1;
 
     //  NEW GAME
     public final int newGameWidth = 210;
@@ -111,17 +116,18 @@ public class GamePanel extends JPanel implements Runnable {
         Image defaultImg = toolkit.getImage("res/cursor/point.png");
         Image hoverImg = toolkit.getImage("res/cursor/click.png");
 
-        cursor = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
-        pointer = toolkit.createCustomCursor(hoverImg, new Point(0, 0), "Hover");
-        setCursor(cursor);
+        pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
+        clicker = toolkit.createCustomCursor(hoverImg, new Point(0, 0), "Hover");
+        setCursor(pointer);
+
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (gameState == titleState) {
-                    int mouseX = e.getX();
-                    int mouseY = e.getY();
+                int mouseX = e.getX();
+                int mouseY = e.getY();
 
+                if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
                         if (mouseX >= newGameX && mouseX <= newGameX + newGameWidth && mouseY >= newGameY && mouseY <= newGameY + newGameHeight) {
                             ui.titleScreenState = 1;
@@ -145,6 +151,48 @@ public class GamePanel extends JPanel implements Runnable {
                             ui.commandNum = 0;
                         }
                     }
+                } else if(gameState == characterState) {
+                    for(int i = 0; i <= 3; i++) {
+                        for(int j = 0; j <= 4; j++) {
+                            int x = tileSize * (9 + j) + 20 + 3 * j;
+                            int y = tileSize * (1 + i) + 20 + 3 * i;
+
+                            if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
+                                ui.slotCol = j;
+                                ui.slotRow = i;
+                                ui.saveSlotPosition();
+                                selectedSlotX = ui.slotCol;
+                                selectedSlotY = ui.slotRow;
+                                playSE(9);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(selectedSlotX != -1 && selectedSlotY != -1) {
+                    selectedSlotX = -1;
+                    selectedSlotY = -1;
+                    selectedX = -1;
+                    selectedY = -1;
+
+                    if (e.getX() < tileSize * 9 || e.getX() > tileSize * 15 || e.getY() < tileSize || e.getY() > tileSize * 6) {
+                        player.dropObject(ui.slotCol + ui.slotRow);
+                    }
+                }
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if(selectedSlotX != -1 && selectedSlotY != -1) {
+                    selectedX = e.getX();
+                    selectedY = e.getY();
                 }
             }
         });
@@ -152,40 +200,63 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (gameState == titleState) {
-                    int mouseX = e.getX();
-                    int mouseY = e.getY();
+                int mouseX = e.getX();
+                int mouseY = e.getY();
 
+                if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
                         if (mouseX >= newGameX && mouseX <= newGameX + newGameWidth && mouseY >= newGameY && mouseY <= newGameY + newGameHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 0;
                         } else if (mouseX >= loadGameX && mouseX <= loadGameX + loadGameWidth && mouseY >= loadGameY && mouseY <= loadGameY + loadGameHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 1;
                         } else if (mouseX >= quitX && mouseX <= quitX + quitWidth && mouseY >= quitY && mouseY <= quitY + quitHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 2;
                         } else {
-                            setCursor(cursor);
+                            setCursor(pointer);
                         }
                     } else if (ui.titleScreenState == 1) {
                         if (mouseX >= fighterX && mouseX <= fighterX + fighterWidth && mouseY >= fighterY && mouseY <= fighterY + fighterHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 0;
                         } else if (mouseX >= thiefX && mouseX <= thiefX + thiefWidth && mouseY >= thiefY && mouseY <= thiefY + thiefHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 1;
                         } else if (mouseX >= sorcererX && mouseX <= sorcererX + sorcererWidth && mouseY >= sorcererY && mouseY <= sorcererY + sorcererHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 2;
                         } else if (mouseX >= backX && mouseX <= backX + backWidth && mouseY >= backY && mouseY <= backY + backHeight) {
-                            setCursor(pointer);
+                            setCursor(clicker);
                             ui.commandNum = 3;
                         } else {
-                            setCursor(cursor);
+                            setCursor(pointer);
                         }
                     }
+                } else if(gameState == characterState) {
+                    if (mouseX < tileSize * 9 || mouseX > tileSize * 15 || mouseY < tileSize || mouseY > tileSize * 6) {
+                        ui.restoreSlotPosition();
+                    }
+
+                    boolean point = false;
+                    for (int i = 0; i <= 3; i++) {
+                        for (int j = 0; j <= 4; j++) {
+                            int x = tileSize * (9 + j) + 20 + 3 * j;
+                            int y = tileSize * (1 + i) + 20 + 3 * i;
+
+                            if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
+                                setCursor(clicker);
+                                if ((ui.slotCol != j || ui.slotRow != i)) {
+                                    ui.slotCol = j;
+                                    ui.slotRow = i;
+                                    playSE(9);
+                                }
+                                point = true;
+                            }
+                        }
+                    }
+                    if(!point) setCursor(pointer);
                 }
             }
         });
@@ -261,7 +332,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         if(gameState == playState) {
             player.update();
-            setCursor(cursor);
+            setCursor(pointer);
 
             // NPC
             for (Entity entity : npc) {

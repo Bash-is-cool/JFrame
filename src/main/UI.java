@@ -23,6 +23,10 @@ public class UI {
     public int titleScreenState = 0; // 0: the first screen
     public int slotCol = 0;
     public int slotRow = 0;
+    public int prevSlotCol = 0;
+    public int prevSlotRow = 0;
+
+
 
      public UI(GamePanel gp) {
          this.gp = gp;
@@ -249,6 +253,16 @@ public class UI {
          g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 14, null);
      }
 
+    public void saveSlotPosition() {
+        prevSlotCol = slotCol;
+        prevSlotRow = slotRow;
+    }
+
+    public void restoreSlotPosition() {
+        slotCol = prevSlotCol;
+        slotRow = prevSlotRow;
+    }
+
      public void drawInventory() {
         // FRAME
         int frameX = gp.tileSize * 9;
@@ -271,17 +285,30 @@ public class UI {
         int cursorHeight = gp.tileSize;
 
         // DRAW ITEMS
-        for(int i = 0; i < gp.player.inventory.size(); i++) {
-            g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
-            slotX += slotSize;
+         for(int i = 0; i < gp.player.inventory.size(); i++) {
+             int x = i;
+             int y = 0;
+             while(x >= 5) {
+                 x -= 4;
+                 y++;
+             }
 
-            if(i == 4 || i == 9 || i == 14) {
-                slotX = slotXStart;
-                slotY += slotSize;
-            }
-        }
+             if(x == slotCol && y == slotRow && gp.selectedX != -1 && gp.selectedY != -1) {
+                 // g2.drawRect(gp.selectedX, gp.selectedY, 10, 10);
+                 g2.drawImage(gp.player.inventory.get(i).down1, gp.selectedX, gp.selectedY, null);
+             } else {
+                 g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+             }
+             slotX += slotSize;
 
-        // DRAW CURSOR
+             if(i == 4 || i == 9 || i == 14) {
+                 slotX = slotXStart;
+                 slotY += slotSize;
+             }
+         }
+
+
+         // DRAW CURSOR
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
@@ -299,8 +326,8 @@ public class UI {
 
         int itemIndex = getItemIndexOnSlot();
         if(itemIndex < gp.player.inventory.size()) {
+            drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
             for(String str : gp.player.inventory.get(itemIndex).description.split("\n")) {
-                drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
                 g2.drawString(str, textX, textY);
                 textY += 32;
             }

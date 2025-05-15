@@ -133,7 +133,7 @@ public class Entity  {
             }
         }
 
-        if(collisionOn == false) {
+        if(!collisionOn) {
             switch (direction) {
                 case "up":
                     worldY -= speed;
