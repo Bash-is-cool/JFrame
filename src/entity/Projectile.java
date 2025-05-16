@@ -19,7 +19,11 @@ public class Projectile extends Entity {
         }
 
         if(user != gp.player) {
-
+            boolean contactPlayer = gp.cChecker.checkPlayer(this);
+            if(!gp.player.invincible && contactPlayer) {
+                damagePlayer(attack);
+                alive = false;
+            }
         }
         switch (direction) {
             case "up":
@@ -58,5 +62,12 @@ public class Projectile extends Entity {
         this.alive = alive;
         this.user = user;
         this.life = this.maxLife;
+    }
+
+    public boolean haveResource(Entity user) {
+        boolean haveResource = false;
+        return haveResource;
+    }
+    public void subtractResource(Entity user) {
     }
 }

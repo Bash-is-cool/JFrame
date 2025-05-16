@@ -187,11 +187,13 @@ public class KeyHandler implements KeyListener {
                 muted = !muted;
             } else if(!muted) {
                 gp.playMusic(0);
+                muted = !muted;
             }
         }
 
         if(code == KeyEvent.VK_H) {
             gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
         }
     }
 
