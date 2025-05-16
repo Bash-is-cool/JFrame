@@ -119,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable {
         Image hoverImg2 = toolkit.getImage("/res/cursor/clicker3.png");
 
         pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
-        clicker = toolkit.createCustomCursor(hoverImg, new Point(), "Hover");
+        clicker = toolkit.createCustomCursor(hoverImg, new Point(10, 10), "Hover");
         clicker2 = toolkit.createCustomCursor(hoverImg2, new Point(), "Click");
         setCursor(pointer);
 
@@ -129,7 +129,6 @@ public class GamePanel extends JPanel implements Runnable {
             public void mousePressed(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-                setCursor(clicker2);
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
