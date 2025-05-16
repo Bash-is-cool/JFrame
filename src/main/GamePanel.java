@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int selectedSlotY = -1;
     public int selectedX = -1;
     public int selectedY = -1;
+    int cursorCount = 0;
 
     //  NEW GAME
     public final int newGameWidth = 210;
@@ -115,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
         // CURSOR
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Image defaultImg = toolkit.getImage("res/cursor/pointer.png");
-        Image hoverImg = toolkit.getImage("res/cursor/clicker.png");
+        Image hoverImg = toolkit.getImage("res/cursor/clicker1.png");
 
         pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
         clicker = toolkit.createCustomCursor(hoverImg, new Point(0, 0), "Hover");
@@ -185,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable {
                     selectedY = -1;
 
                     if (e.getX() < tileSize * 9 || e.getX() > tileSize * 15 || e.getY() < tileSize || e.getY() > tileSize * 6) {
-                        player.dropObject(ui.slotCol + ui.slotRow);
+                        player.dropObject(ui.slotCol + (ui.slotRow * 5));
                     }
                 }
             }

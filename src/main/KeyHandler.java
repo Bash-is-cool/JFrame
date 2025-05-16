@@ -195,6 +195,10 @@ public class KeyHandler implements KeyListener {
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
         }
+
+        if(code == KeyEvent.VK_1) {
+            gp.assetSetter.setObject();
+        }
     }
 
     public void pauseState(int code) {

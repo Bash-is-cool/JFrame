@@ -4,7 +4,6 @@ import entity.Entity;
 import main.GamePanel;
 
 public class OBJ_Potion_Red extends Entity {
-    int value = 5;
     GamePanel gp;
     public OBJ_Potion_Red(GamePanel gp) {
         super(gp);
@@ -12,6 +11,7 @@ public class OBJ_Potion_Red extends Entity {
 
         type = typeConsumable;
         name = "Red Potion";
+        value = 5;
         down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nHeals your life by " + value;
     }
@@ -20,9 +20,6 @@ public class OBJ_Potion_Red extends Entity {
         gp.gameState = gp.dialogueState;
         gp.ui.currentDialogue = "You drink the " + name + "!\nYour life has been restored by " + value + ".";
         entity.life += value;
-        if(gp.player.life > gp.player.maxLife) {
-            gp.player.life = gp.player.maxLife;
-        }
         gp.playSE(2);
     }
 }

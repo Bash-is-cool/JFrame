@@ -1,7 +1,6 @@
 package monster;
 
 import entity.Entity;
-import entity.Projectile;
 import main.GamePanel;
 import object.OBJ_Rock;
 
