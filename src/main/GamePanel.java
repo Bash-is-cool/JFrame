@@ -56,13 +56,12 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     // CURSOR
-    Cursor pointer, clicker;
+    Cursor pointer, clicker, clicker2;
     int mouseClickX, mouseClickY;
     public int selectedSlotX = -1;
     public int selectedSlotY = -1;
     public int selectedX = -1;
     public int selectedY = -1;
-    int cursorCount = 0;
 
     //  NEW GAME
     public final int newGameWidth = 210;
@@ -115,11 +114,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         // CURSOR
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image defaultImg = toolkit.getImage("res/cursor/pointer.png");
-        Image hoverImg = toolkit.getImage("res/cursor/clicker1.png");
+        Image defaultImg = toolkit.getImage("res/cursor/pointer2.png");
+        Image hoverImg = toolkit.getImage("res/cursor/clicker4.png");
+        Image hoverImg2 = toolkit.getImage("/res/cursor/clicker3.png");
 
         pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
-        clicker = toolkit.createCustomCursor(hoverImg, new Point(0, 0), "Hover");
+        clicker = toolkit.createCustomCursor(hoverImg, new Point(), "Hover");
+        clicker2 = toolkit.createCustomCursor(hoverImg2, new Point(), "Click");
         setCursor(pointer);
 
 
@@ -128,6 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
             public void mousePressed(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
+                setCursor(clicker2);
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
