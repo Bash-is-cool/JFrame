@@ -13,6 +13,7 @@ public class KeyHandler implements KeyListener {
     boolean checkDrawTime = false;
     public boolean hitBox = false;
     public boolean click = false;
+    public boolean muted = true;
     Graphics2D g2;
 
     public KeyHandler(GamePanel gp) {
@@ -174,6 +175,19 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_R) {
             gp.tileM.loadMap("/maps/worldV2.txt");
         }
+
+        if(code == KeyEvent.VK_M) {
+            if(muted) {
+                gp.stopMusic();
+                muted = !muted;
+            } else if(!muted) {
+                gp.playMusic(0);
+            }
+        }
+
+        if(code == KeyEvent.VK_H) {
+            gp.player.life = gp.player.maxLife;
+        }
     }
 
     public void pauseState(int code) {
@@ -220,6 +234,11 @@ public class KeyHandler implements KeyListener {
                 gp.ui.slotCol++;
                 gp.playSE(9);
             }
+        }
+
+        if(code == KeyEvent.VK_ENTER) {
+            gp.player.selectItem();
+            gp.playSE(10);
         }
         gp.ui.saveSlotPosition();
     }

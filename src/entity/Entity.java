@@ -43,7 +43,6 @@ public class Entity  {
     // CHARACTER ATTRIBUTES
     public int maxLife;
     public int life;
-    public int type; // 0 = player, 1 = npc. 2 = monster
     public int speed;
     public String name;
     public int level;
@@ -61,6 +60,16 @@ public class Entity  {
     public int attackValue;
     public int defenseValue;
     public String description = "";
+
+    // TYPE
+    public int type; // 0 = player, 1 = npc. 2 = monster
+    public final int typePlayer = 0;
+    public final int typeNPC = 1;
+    public final int typeMonster = 2;
+    public final int typeSword = 3;
+    public final int typeAxe = 4;
+    public final int typeShield = 5;
+    public final int typeConsumable = 6;
 
 
     public Entity(GamePanel gp) {
@@ -108,6 +117,10 @@ public class Entity  {
 
     }
 
+    public void use(Entity entity) {
+
+    }
+
     public void damageReaction() {
 
     }
@@ -122,7 +135,7 @@ public class Entity  {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if(this.type == 2 && contactPlayer) {
+        if(this.type == typeMonster && contactPlayer) {
             if(!gp.player.invincible) {
                 int damage = attack - gp.player.defense;
                 if(damage < 0)
@@ -194,7 +207,7 @@ public class Entity  {
             }
 
         // MONSTER HP BAR
-        if(type == 2 && hpBarOn) {
+        if(type == typeMonster && hpBarOn) {
             double oneScale = (double)gp.tileSize / maxLife;
             double hpBarValue = oneScale * life;
 
@@ -230,6 +243,7 @@ public class Entity  {
     public void dyingAnimation(Graphics2D g2) {
         dyingCounter++;
         int i = 5;
+        attack = 0;
 
         if(dyingCounter <= i) {changeAlpha(g2, 0);}
         if(dyingCounter > i && dyingCounter <= i * 2) {changeAlpha(g2, 1);}
@@ -241,7 +255,6 @@ public class Entity  {
         if(dyingCounter > i * 7 && dyingCounter <= i * 8) {changeAlpha(g2, 1);}
 
         if(dyingCounter > i * 8) {
-            dying = false;
             alive = false;
         }
     }

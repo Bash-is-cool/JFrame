@@ -293,6 +293,11 @@ public class UI {
                  y++;
              }
 
+             if(gp.player.inventory.get(i) == gp.player.currentWeapon || gp.player.inventory.get(i) == gp.player.currentShield) {
+                 g2.setColor(new Color(240, 190, 90));
+                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
+             }
+
              if(x == slotCol && y == slotRow && gp.selectedX != -1 && gp.selectedY != -1) {
                  // g2.drawRect(gp.selectedX, gp.selectedY, 10, 10);
                  g2.drawImage(gp.player.inventory.get(i).down1, gp.selectedX, gp.selectedY, null);

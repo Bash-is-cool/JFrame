@@ -113,8 +113,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         // CURSOR
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image defaultImg = toolkit.getImage("res/cursor/point.png");
-        Image hoverImg = toolkit.getImage("res/cursor/click.png");
+        Image defaultImg = toolkit.getImage("res/cursor/pointer.png");
+        Image hoverImg = toolkit.getImage("res/cursor/clicker.png");
 
         pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
         clicker = toolkit.createCustomCursor(hoverImg, new Point(0, 0), "Hover");
@@ -163,10 +163,13 @@ public class GamePanel extends JPanel implements Runnable {
                                 ui.saveSlotPosition();
                                 selectedSlotX = ui.slotCol;
                                 selectedSlotY = ui.slotRow;
+                                player.selectItem();
                                 playSE(10);
                             }
                         }
                     }
+                } else if(gameState == dialogueState) {
+                    gameState = playState;
                 }
             }
         });
