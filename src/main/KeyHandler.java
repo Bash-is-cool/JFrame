@@ -14,6 +14,7 @@ public class KeyHandler implements KeyListener {
     public boolean hitBox = false;
     public boolean click = false;
     public boolean muted = true;
+    public boolean shotKeyPressed;
     Graphics2D g2;
 
     public KeyHandler(GamePanel gp) {
@@ -159,6 +160,10 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.characterState;
         }
 
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = true;
+        }
+
         // DEBUG
         if (code == KeyEvent.VK_T) {
             checkDrawTime = !checkDrawTime;
@@ -261,6 +266,10 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             leftPressed = false;
+        }
+
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = false;
         }
     }
 
