@@ -165,7 +165,7 @@ public class GamePanel extends JPanel implements Runnable {
                                 ui.saveSlotPosition();
                                 selectedSlotX = ui.slotCol;
                                 selectedSlotY = ui.slotRow;
-                                player.selectItem();
+                                if(player.inventory.get(ui.slotCol + (ui.slotRow * 5)).type != player.typeConsumable) player.selectItem();
                                 playSE(10);
                             }
                         }
