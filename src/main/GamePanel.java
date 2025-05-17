@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -34,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
-    public boolean fullScreenOn = false;
+    public boolean fullScreenOn = true;
 
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
@@ -140,8 +139,8 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
+                int mouseX = scaleWidth(e.getX());
+                int mouseY = scaleHeight(e.getY());
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
@@ -170,7 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
                 } else if(gameState == characterState) {
                     for(int i = 0; i <= 3; i++) {
                         for(int j = 0; j <= 4; j++) {
-                            int x = tileSize * (9 + j) + 20 + 3 * j;
+                            int x = tileSize * (12 + j) + 20 + 3 * j;
                             int y = tileSize * (1 + i) + 20 + 3 * i;
 
                             if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
@@ -193,13 +192,15 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                int mouseX = scaleWidth(e.getX());
+                int mouseY = scaleHeight(e.getY());
                 if(selectedSlotX != -1 && selectedSlotY != -1) {
                     selectedSlotX = -1;
                     selectedSlotY = -1;
                     selectedX = -1;
                     selectedY = -1;
 
-                    if (e.getX() < tileSize * 9 || e.getX() > tileSize * 15 || e.getY() < tileSize || e.getY() > tileSize * 6) {
+                    if (mouseX < tileSize * 12 || mouseX > tileSize * 18 || mouseY < tileSize || mouseY > tileSize * 6) {
                         player.dropObject(ui.slotCol + (ui.slotRow * 5));
                     }
                 }
@@ -210,8 +211,8 @@ public class GamePanel extends JPanel implements Runnable {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if(selectedSlotX != -1 && selectedSlotY != -1) {
-                    selectedX = e.getX();
-                    selectedY = e.getY();
+                    selectedX = scaleWidth(e.getX());
+                    selectedY = scaleHeight(e.getY());
                 }
             }
         });
@@ -219,8 +220,8 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
+                int mouseX = scaleWidth(e.getX());
+                int mouseY = scaleHeight(e.getY());
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
@@ -254,14 +255,14 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                     }
                 } else if(gameState == characterState) {
-                    if (mouseX < tileSize * 9 || mouseX > tileSize * 15 || mouseY < tileSize || mouseY > tileSize * 6) {
+                    if (mouseX < tileSize * 12 || mouseX > tileSize * 18 || mouseY < tileSize || mouseY > tileSize * 6) {
                         ui.restoreSlotPosition();
                     }
 
                     boolean point = false;
                     for (int i = 0; i <= 3; i++) {
                         for (int j = 0; j <= 4; j++) {
-                            int x = tileSize * (9 + j) + 20 + 3 * j;
+                            int x = tileSize * (12 + j) + 20 + 3 * j;
                             int y = tileSize * (1 + i) + 20 + 3 * i;
 
                             if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
@@ -533,5 +534,19 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSE(int i) {
         se.setFile(i);
         se.play();
+    }
+
+    public int scaleWidth(int num) {
+        if(fullScreenOn) {
+            return (num * screenWidth / screenWidth2);
+        }
+        else return num;
+    }
+
+    public int scaleHeight(int num) {
+        if(fullScreenOn) {
+            return (num * screenHeight / screenHeight2);
+        }
+        else return num;
     }
 }
