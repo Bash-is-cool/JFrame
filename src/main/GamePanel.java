@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int characterState = 4;
 
     // FPS
-    int FPS = 60;
+    int FPS = 120;
 
     // CURSOR
     Cursor pointer, clicker, clicker2;
@@ -486,6 +486,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (Entity entity : entityList) {
                 entity.draw(g2);
             }
+
             // EMPTY ENTITY LIST
             entityList.clear();
 

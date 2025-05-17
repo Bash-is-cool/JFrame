@@ -40,6 +40,22 @@ public class Projectile extends Entity {
             case "right":
                 worldX += speed;
                 break;
+            case "upLeft":
+                worldX -= (int) (speed / Math.sqrt(2));
+                worldY -= (int) (speed / Math.sqrt(2));
+                break;
+            case "upRight":
+                worldX += (int) (speed / Math.sqrt(2));
+                worldY -= (int) (speed / Math.sqrt(2));
+                break;
+            case "downLeft":
+                worldX -= (int) (speed / Math.sqrt(2));
+                worldY += (int) (speed / Math.sqrt(2));
+                break;
+            case "downRight":
+                worldX += (int) (speed / Math.sqrt(2));
+                worldY += (int) (speed / Math.sqrt(2));
+                break;
         }
 
         life--;
@@ -67,8 +83,7 @@ public class Projectile extends Entity {
     }
 
     public boolean haveResource(Entity user) {
-        boolean haveResource = false;
-        return haveResource;
+        return false;
     }
     public void subtractResource(Entity user) {
     }

@@ -31,6 +31,14 @@ public class OBJ_Fireball extends Projectile {
         left2 = setup("/projectile/fireball_left_2", gp.tileSize, gp.tileSize);
         right1 = setup("/projectile/fireball_right_1", gp.tileSize, gp.tileSize);
         right2 = setup("/projectile/fireball_right_2", gp.tileSize, gp.tileSize);
+        upLeft1 = rotateImage(left1, 45);
+        upLeft2 = rotateImage(left2, 45);
+        upRight1 = rotateImage(right1, -45);
+        upRight2 = rotateImage(right2, -45);
+        downLeft1 = rotateImage(left1, -45);
+        downLeft2 = rotateImage(left2, -45);
+        downRight1 = rotateImage(right1, 45);
+        downRight2 = rotateImage(right2, 45);
     }
 
     public boolean haveResource(Entity user) {

@@ -156,7 +156,7 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.pauseState;
         }
 
-        if(code == KeyEvent.VK_C) {
+        if(code == KeyEvent.VK_E) {
             gp.gameState = gp.characterState;
         }
 
@@ -216,7 +216,7 @@ public class KeyHandler implements KeyListener {
     }
 
     public void characterState(int code) {
-        if(code == KeyEvent.VK_C) {
+        if(code == KeyEvent.VK_E) {
             gp.gameState = gp.playState;
         }
 

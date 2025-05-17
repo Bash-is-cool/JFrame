@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Entity  {
     GamePanel gp;
 
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2, upLeft1, upLeft2, upRight1, upRight2, downLeft1, downLeft2, downRight1, downRight2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage image, image2, image3;
     public boolean collision = false;
@@ -238,6 +238,22 @@ public class Entity  {
                     if(spriteNum == 1) {image = right1;}
                     if(spriteNum == 2) {image = right2;}
                     break;
+                case "upLeft":
+                    if(spriteNum == 1) {image = upLeft1;}
+                    if(spriteNum == 2) {image = upLeft2;}
+                    break;
+                case "upRight":
+                    if(spriteNum == 1) {image = upRight1;}
+                    if(spriteNum == 2) {image = upRight2;}
+                    break;
+                case "downLeft":
+                    if(spriteNum == 1) {image = downLeft1;}
+                    if(spriteNum == 2) {image = downLeft2;}
+                    break;
+                case "downRight":
+                    if(spriteNum == 1) {image = downRight1;}
+                    if(spriteNum == 2) {image = downRight2;}
+                    break;
             }
 
         // MONSTER HP BAR
@@ -327,5 +343,35 @@ public class Entity  {
         gp.particleList.add(p2);
         gp.particleList.add(p3);
         gp.particleList.add(p4);
+    }
+
+    public BufferedImage rotateImage(BufferedImage image, double angle) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        // Calculate the new dimensions of the rotated image
+        double radian = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radian));
+        double cos = Math.abs(Math.cos(radian));
+        int newWidth = (int) Math.floor(width * cos + height * sin);
+        int newHeight = (int) Math.floor(height * cos + width * sin);
+
+        // Create a new BufferedImage to hold the rotated image
+        BufferedImage rotatedImage = new BufferedImage(newWidth, newHeight, image.getType());
+        Graphics2D g2d = rotatedImage.createGraphics();
+
+        // Set rendering hints for better quality
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Translate to the center of the image and rotate
+        g2d.translate((newWidth - width) / 2, (newHeight - height) / 2);
+        g2d.rotate(radian, (double) width / 2, (double) height / 2);
+
+        // Draw the original image onto the rotated image
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return rotatedImage;
     }
 }
