@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_OldMan;
+import interactiveTile.IT_DryTree;
 import monster.MON_GreenSlime;
 import object.*;
 
@@ -26,7 +27,7 @@ public class AssetSetter {
         gp.obj[i].worldY = gp.tileSize * 21;
         i++;
         gp.obj[i] = new OBJ_Axe(gp);
-        gp.obj[i].worldX = gp.tileSize * 33;
+        gp.obj[i].worldX = gp.tileSize * 24;
         gp.obj[i].worldY = gp.tileSize * 21;
         i++;
         gp.obj[i] = new OBJ_Shield_Blue(gp);
@@ -51,10 +52,6 @@ public class AssetSetter {
         gp.npc[0] = new NPC_OldMan(gp);
         gp.npc[0].worldX = gp.tileSize * 21;
         gp.npc[0].worldY = gp.tileSize * 21;
-
-        /*gp.npc[0] = new NPC_OldMan(gp);
-        gp.npc[0].worldX = gp.tileSize * 9;
-        gp.npc[0].worldY = gp.tileSize * 10;*/
     }
 
     public void setMonster() {
@@ -65,13 +62,41 @@ public class AssetSetter {
         gp.monster[1] = new MON_GreenSlime(gp);
         gp.monster[1].worldX = gp.tileSize * 23;
         gp.monster[1].worldY = gp.tileSize * 37;
+    }
 
-//        gp.monster[0] = new MON_GreenSlime(gp);
-//        gp.monster[0].worldX = gp.tileSize * 11;
-//        gp.monster[0].worldY = gp.tileSize * 10;
-//
-//        gp.monster[1] = new MON_GreenSlime(gp);
-//        gp.monster[1].worldX = gp.tileSize * 11;
-//        gp.monster[1].worldY = gp.tileSize * 11;
+    public void setInteractiveTile() {
+        int i = 0;
+        gp.iTile[i] = new IT_DryTree(gp, 27, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 28, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 29, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 31, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 32, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 33, 12);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 20);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 21);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 22);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 20);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 21);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 22);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 22, 24);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 23, 24);
+        i++;
+        gp.iTile[i] = new IT_DryTree(gp, 24, 24);
+        i++;
     }
 }
