@@ -27,7 +27,7 @@ public class AssetSetter {
         gp.obj[i].worldY = gp.tileSize * 21;
         i++;
         gp.obj[i] = new OBJ_Axe(gp);
-        gp.obj[i].worldX = gp.tileSize * 24;
+        gp.obj[i].worldX = gp.tileSize * 34;
         gp.obj[i].worldY = gp.tileSize * 21;
         i++;
         gp.obj[i] = new OBJ_Shield_Blue(gp);
@@ -79,24 +79,6 @@ public class AssetSetter {
         gp.iTile[i] = new IT_DryTree(gp, 32, 12);
         i++;
         gp.iTile[i] = new IT_DryTree(gp, 33, 12);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 30, 20);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 30, 21);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 30, 22);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 20, 20);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 20, 21);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 20, 22);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 22, 24);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 23, 24);
-        i++;
-        gp.iTile[i] = new IT_DryTree(gp, 24, 24);
         i++;
     }
 }

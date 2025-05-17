@@ -8,6 +8,7 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -40,6 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity[] monster = new Entity[20];
     public InteractiveTile[] iTile = new InteractiveTile[50];
     ArrayList<Entity> entityList = new ArrayList<>();
+    public ArrayList<Entity> particleList = new ArrayList<>();
     public ArrayList<Entity> projectileList = new ArrayList<>();
 
     // GAME STATE
@@ -371,6 +373,15 @@ public class GamePanel extends JPanel implements Runnable {
                         projectileList.remove(i);
                 }
             }
+
+            for(int i = 0; i < particleList.size(); i++) {
+                if(particleList.get(i) != null) {
+                    if(particleList.get(i).alive)
+                        particleList.get(i).update();
+                    if(!particleList.get(i).alive)
+                        particleList.remove(i);
+                }
+            }
         }
 
         for (InteractiveTile interactiveTile : iTile) {
@@ -436,8 +447,20 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            for (Entity value : particleList) {
+                if (value != null) {
+                    entityList.add(value);
+                }
+            }
+
             // SORT
-            entityList.sort(Comparator.comparingInt(e -> e.worldY));
+            entityList.sort(new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    // result returns : (x=y : 0, x>y : >0, x<y : <0)
+                    return Integer.compare(e1.worldY, e2.worldY);
+                }
+            });
 
             // DRAW ENTITIES
             for (Entity entity : entityList) {
