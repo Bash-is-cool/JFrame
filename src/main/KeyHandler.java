@@ -198,6 +198,7 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_1) {
             gp.assetSetter.setObject();
+            gp.assetSetter.setMonster();
         }
     }
 
