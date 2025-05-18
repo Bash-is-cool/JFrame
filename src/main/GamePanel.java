@@ -64,9 +64,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 3;
     public final int characterState = 4;
     public final int optionState = 5;
+    public final int gameOverState = 6;
 
     // FPS
-    int FPS = 120;
+    int FPS = 60;
 
     // CURSOR
     Cursor pointer, clicker, clicker2;
@@ -296,6 +297,23 @@ public class GamePanel extends JPanel implements Runnable {
         if(fullScreenOn) {
             setFullScreen();
         }
+    }
+
+    public void retry() {
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        assetSetter.setNPC();
+        assetSetter.setMonster();
+    }
+
+    public void restart() {
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        player.setItems();
+        assetSetter.setObject();
+        assetSetter.setNPC();
+        assetSetter.setMonster();
+        assetSetter.setInteractiveTile();
     }
 
     public void setFullScreen() {
