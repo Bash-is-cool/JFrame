@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
+    Config config = new Config(this);
     Thread gameThread;
     Sound music = new Sound();
     Sound se = new Sound();
@@ -292,7 +293,9 @@ public class GamePanel extends JPanel implements Runnable {
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
 
-        setFullScreen();
+        if(fullScreenOn) {
+            setFullScreen();
+        }
     }
 
     public void setFullScreen() {

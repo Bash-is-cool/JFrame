@@ -522,6 +522,8 @@ public class UI {
          g2.drawRoundRect(textX, textY, 120, 24, 10, 10);
          volumeWidth = 24 * gp.se.volumeScale;
          g2.fillRoundRect(textX, textY, volumeWidth, 24, 10, 10);
+
+         gp.config.saveConfig();
      }
 
      public void fullScreenNotification(int frameX, int frameY) {
