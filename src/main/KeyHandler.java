@@ -300,7 +300,7 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-            if(gp.ui.npcSlotCol != 3) {
+            if(gp.ui.npcSlotRow != 3) {
                 gp.ui.npcSlotRow++;
                 gp.playSE(9);
             }
