@@ -67,6 +67,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int characterState = 4;
     public final int optionState = 5;
     public final int gameOverState = 6;
+    public final int transitionState = 7;
+    public final int tradeState = 8;
 
     // FPS
     int FPS = 60;
@@ -177,12 +179,12 @@ public class GamePanel extends JPanel implements Runnable {
                             int y = tileSize * (1 + i) + 20 + 3 * i;
 
                             if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
-                                ui.slotCol = j;
-                                ui.slotRow = i;
+                                ui.playerSlotCol = j;
+                                ui.playerSlotRow = i;
                                 ui.saveSlotPosition();
-                                selectedSlotX = ui.slotCol;
-                                selectedSlotY = ui.slotRow;
-                                if(player.inventory.get(ui.slotCol + (ui.slotRow * 5)).type != player.typeConsumable) player.selectItem();
+                                selectedSlotX = ui.playerSlotCol;
+                                selectedSlotY = ui.playerSlotRow;
+                                if(player.inventory.get(ui.playerSlotCol + (ui.playerSlotRow * 5)).type != player.typeConsumable) player.selectItem();
                                 playSE(10);
                             }
                         }
@@ -205,7 +207,7 @@ public class GamePanel extends JPanel implements Runnable {
                     selectedY = -1;
 
                     if (mouseX < tileSize * 12 || mouseX > tileSize * 18 || mouseY < tileSize || mouseY > tileSize * 6) {
-                        player.dropObject(ui.slotCol + (ui.slotRow * 5));
+                        player.dropObject(ui.playerSlotCol + (ui.playerSlotRow * 5));
                     }
                 }
             }
@@ -271,9 +273,9 @@ public class GamePanel extends JPanel implements Runnable {
 
                             if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
                                 setCursor(clicker);
-                                if ((ui.slotCol != j || ui.slotRow != i)) {
-                                    ui.slotCol = j;
-                                    ui.slotRow = i;
+                                if ((ui.playerSlotCol != j || ui.playerSlotRow != i)) {
+                                    ui.playerSlotCol = j;
+                                    ui.playerSlotRow = i;
                                     playSE(9);
                                 }
                                 point = true;
