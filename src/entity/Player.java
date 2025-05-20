@@ -6,7 +6,6 @@ import object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -42,7 +41,8 @@ public class Player extends Entity {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
 
-        speed = 4;
+        deafaultSpeed = 4;
+        speed = deafaultSpeed;
         direction = "down";
 
         // PLAYER STATUS
@@ -60,7 +60,6 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp); // USE THIS
-        //projectile = new OBJ_Rock(gp);
         attack = getAttack();
         defense = getDefense();
     }
@@ -199,9 +198,20 @@ public class Player extends Entity {
         }
 
         if(gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.haveResource(this)) {
+            // SET DEFAULT DIRECTION COORDINATES AND USER
             projectile.set(worldX, worldY, direction, true, this);
+
+            // SUBTRACT THE COST (MANA, AMMO, etc.)
             projectile.subtractResource(this);
-            gp.projectileList.add(projectile);
+            
+            // CHECK VACANCY
+            for(int i = 0; i < gp.projectile[1].length; i++) {
+                if(gp.projectile[gp.currentMap][i] == null) {
+                    gp.projectile[gp.currentMap][i] = projectile;
+                    break;
+                }
+            }
+            
             shotAvailableCounter = 0;
             gp.playSE(11);
         }
@@ -263,10 +273,13 @@ public class Player extends Entity {
 
             // Check monster collision with updated values
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack);
+            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 
             int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
             damageInteractiveTile(iTileIndex);
+
+            int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
+            damageProjectile(projectileIndex);
 
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -279,6 +292,20 @@ public class Player extends Entity {
             spriteCounter = 0;
             attacking = false;
         }
+    }
+
+    public void damageProjectile(int i) {
+        if(i != 999) {
+            Entity projectile = gp.projectile[gp.currentMap][i];
+            projectile.alive = false;
+            generateParticle(projectile, projectile);
+        }
+    }
+
+    public void knockBack(Entity entity, int knockBackPower) {
+        entity.direction = direction;
+        entity.speed += knockBackPower;
+        entity.knockBack = true;
     }
 
     public void damageInteractiveTile(int i) {
@@ -370,10 +397,15 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int i, int attack) {
+    public void damageMonster(int i, int attack, int knockBackPower) {
         if(i != 999) {
             if(!gp.monster[gp.currentMap][i].invincible) {
                 gp.playSE(5);
+
+                if(knockBackPower > 0) {
+                    knockBack(gp.monster[gp.currentMap][i], knockBackPower);
+                }
+
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
                 if(damage < 0)
                     damage = 0;

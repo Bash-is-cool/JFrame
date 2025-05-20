@@ -1,6 +1,5 @@
 package monster;
 
-import ai.PathFinder;
 import entity.Entity;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
@@ -17,7 +16,8 @@ public class MON_GreenSlime extends Entity {
         this.gp = gp;
         type = typeMonster;
         name = "Green Slime";
-        speed = 1;
+        deafaultSpeed = 1;
+        speed = deafaultSpeed;
         maxLife = 4;
         life = maxLife;
         attack = 5;
@@ -68,13 +68,19 @@ public class MON_GreenSlime extends Entity {
 
     public void setAction() {
         if(onPath) {
-            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize, goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
             searchPath(goalCol, goalRow);
-            int i = new Random().nextInt(100) + 1;
-            if(i > 19 && !projectile.alive && shotAvailableCounter == 30) {
+            int i = new Random().nextInt(200) + 1;
+            if(i > 197 && !projectile.alive && shotAvailableCounter == 30) {
                 projectile.set(worldX, worldY, direction, true, this);
-                gp.projectileList.add(projectile);
+                for(int j = 0; j < gp.projectile[1].length; j++) {
+                    if(gp.projectile[gp.currentMap][j] == null) {
+                        gp.projectile[gp.currentMap][j] = projectile;
+                        break;
+                    }
+                }
                 shotAvailableCounter = 0;
             }
         } else {
