@@ -1,5 +1,6 @@
 package main;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import interactiveTile.InteractiveTile;
@@ -37,7 +38,8 @@ public class GamePanel extends JPanel implements Runnable {
     Graphics2D g2;
     public boolean fullScreenOn = true;
 
-    TileManager tileM = new TileManager(this);
+    // SYSTEM
+    public TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     Config config = new Config(this);
     Thread gameThread;
@@ -47,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
+    public PathFinder pFinder = new PathFinder(this);
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -82,46 +85,25 @@ public class GamePanel extends JPanel implements Runnable {
     public int selectedY = -1;
 
     //  NEW GAME
-    public final int newGameWidth = 210;
-    public final int newGameHeight = 40;
-    public final int newGameX = screenWidth / 2 - newGameWidth / 2 + 2;
-    public final int newGameY = (int) (tileSize * 7.5) + 11;
+    public final Rectangle newGame = new Rectangle(screenWidth / 2 - 210 / 2 + 2, (int) (tileSize * 7.5) + 11, 210, 40);
 
     // LOAD GAME
-    public final int loadGameWidth = 210;
-    public final int loadGameHeight = 40;
-    public final int loadGameX = screenWidth / 2 - loadGameWidth / 2 + 2;
-    public final int loadGameY = (int) (tileSize * 8.5) + 11;
+    public final Rectangle loadGame = new Rectangle(screenWidth / 2 - 210 / 2 + 2, (int) (tileSize * 8.5) + 11, 210, 40);
 
     // QUIT
-    public final int quitWidth = 210;
-    public final int quitHeight = 40;
-    public final int quitX = screenWidth / 2 - quitWidth / 2 + 2;
-    public final int quitY = (int) (tileSize * 9.5) + 11;
+    public final Rectangle quitGame = new Rectangle(screenWidth / 2 - 210 / 2 + 2, (int) (tileSize * 9.5) + 11, 210, 40);
 
     // FIGHTER
-    public final int fighterWidth = 210;
-    public final int fighterHeight = 40;
-    public final int fighterX = screenWidth / 2 - fighterWidth / 2 + 2;
-    public final int fighterY = tileSize * 4 + 13;
+    public final Rectangle fighter = new Rectangle(screenWidth / 2 - 210 / 2 + 2, tileSize * 4 + 13, 210, 40);
 
     // THIEF
-    public final int thiefWidth = 210;
-    public final int thiefHeight = 40;
-    public final int thiefX = screenWidth / 2 - thiefWidth / 2 + 2;
-    public final int thiefY = tileSize * 5 + 13;
+    public final Rectangle thief = new Rectangle(screenWidth / 2 - 210 / 2 + 2, tileSize * 5 + 13, 210, 40);
 
     // SORCERER
-    public final int sorcererWidth = 210;
-    public final int sorcererHeight = 40;
-    public final int sorcererX = screenWidth / 2 - sorcererWidth / 2 + 2;
-    public final int sorcererY = tileSize * 6 + 13;
+    public final Rectangle sorcerer = new Rectangle(screenWidth / 2 - 210 / 2 + 2, tileSize * 6 + 13, 210, 40);
 
     // BACK
-    public final int backWidth = 210;
-    public final int backHeight = 40;
-    public final int backX = screenWidth / 2 - backWidth / 2 + 2;
-    public final int backY = tileSize * 9 + 13;
+    public final Rectangle back = new Rectangle(screenWidth / 2 - 210 / 2 + 2, tileSize * 9 + 13, 210, 40);
 
     public GamePanel() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -150,24 +132,24 @@ public class GamePanel extends JPanel implements Runnable {
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
-                        if (mouseX >= newGameX && mouseX <= newGameX + newGameWidth && mouseY >= newGameY && mouseY <= newGameY + newGameHeight) {
+                        if (mouseX >= newGame.x && mouseX <= newGame.x + newGame.width && mouseY >= newGame.y && mouseY <= newGame.y + newGame.height) {
                             ui.titleScreenState = 1;
-                        } else if (mouseX >= loadGameX && mouseX <= loadGameX + loadGameWidth && mouseY >= loadGameY && mouseY <= loadGameY + loadGameHeight) {
+                        } else if (mouseX >= loadGame.x && mouseX <= loadGame.x + loadGame.width && mouseY >= loadGame.y && mouseY <= loadGame.y + loadGame.height) {
                             // Load Game Logic
-                        } else if (mouseX >= quitX && mouseX <= quitX + quitWidth && mouseY >= quitY && mouseY <= quitY + quitHeight) {
+                        } else if (mouseX >= quitGame.x && mouseX <= quitGame.x + quitGame.width && mouseY >= quitGame.y && mouseY <= quitGame.y + quitGame.height) {
                             System.exit(0);
                         }
                     } else if (ui.titleScreenState == 1) {
-                        if (mouseX >= fighterX && mouseX <= fighterX + fighterWidth && mouseY >= fighterY && mouseY <= fighterY + fighterHeight) {
+                        if (mouseX >= fighter.x && mouseX <= fighter.x + fighter.width && mouseY >= fighter.y && mouseY <= fighter.y + fighter.height) {
                             playMusic(0);
                             gameState = playState;
-                        } else if (mouseX >= thiefX && mouseX <= thiefX + thiefWidth && mouseY >= thiefY && mouseY <= thiefY + thiefHeight) {
+                        } else if (mouseX >= thief.x && mouseX <= thief.x + thief.width && mouseY >= thief.y && mouseY <= thief.y + thief.height) {
                             playMusic(0);
                             gameState = playState;
-                        } else if (mouseX >= sorcererX && mouseX <= sorcererX + sorcererWidth && mouseY >= sorcererY && mouseY <= sorcererY + sorcererHeight) {
+                        } else if (mouseX >= sorcerer.x && mouseX <= sorcerer.x + sorcerer.width && mouseY >= sorcerer.y && mouseY <= sorcerer.y + sorcerer.height) {
                             playMusic(0);
                             gameState = playState;
-                        } else if (mouseX >= backX && mouseX <= backX + backWidth && mouseY >= backY && mouseY <= backY + backHeight) {
+                        } else if (mouseX >= back.x && mouseX <= back.x + back.width && mouseY >= back.y && mouseY <= back.y + back.height) {
                             ui.titleScreenState = 0;
                             ui.commandNum = 0;
                         }
@@ -231,29 +213,29 @@ public class GamePanel extends JPanel implements Runnable {
 
                 if (gameState == titleState) {
                     if (ui.titleScreenState == 0) {
-                        if (mouseX >= newGameX && mouseX <= newGameX + newGameWidth && mouseY >= newGameY && mouseY <= newGameY + newGameHeight) {
+                        if (mouseX >= newGame.x && mouseX <= newGame.x + newGame.width && mouseY >= newGame.y && mouseY <= newGame.y + newGame.height) {
                             setCursor(clicker);
                             ui.commandNum = 0;
-                        } else if (mouseX >= loadGameX && mouseX <= loadGameX + loadGameWidth && mouseY >= loadGameY && mouseY <= loadGameY + loadGameHeight) {
+                        } else if (mouseX >= loadGame.x && mouseX <= loadGame.x + loadGame.width && mouseY >= loadGame.y && mouseY <= loadGame.y + loadGame.height) {
                             setCursor(clicker);
                             ui.commandNum = 1;
-                        } else if (mouseX >= quitX && mouseX <= quitX + quitWidth && mouseY >= quitY && mouseY <= quitY + quitHeight) {
+                        } else if (mouseX >= quitGame.x && mouseX <= quitGame.x + quitGame.width && mouseY >= quitGame.y && mouseY <= quitGame.y + quitGame.height) {
                             setCursor(clicker);
                             ui.commandNum = 2;
                         } else {
                             setCursor(pointer);
                         }
                     } else if (ui.titleScreenState == 1) {
-                        if (mouseX >= fighterX && mouseX <= fighterX + fighterWidth && mouseY >= fighterY && mouseY <= fighterY + fighterHeight) {
+                        if (mouseX >= fighter.x && mouseX <= fighter.x + fighter.width && mouseY >= fighter.y && mouseY <= fighter.y + fighter.height) {
                             setCursor(clicker);
                             ui.commandNum = 0;
-                        } else if (mouseX >= thiefX && mouseX <= thiefX + thiefWidth && mouseY >= thiefY && mouseY <= thiefY + thiefHeight) {
+                        } else if (mouseX >= thief.x && mouseX <= thief.x + thief.width && mouseY >= thief.y && mouseY <= thief.y + thief.height) {
                             setCursor(clicker);
                             ui.commandNum = 1;
-                        } else if (mouseX >= sorcererX && mouseX <= sorcererX + sorcererWidth && mouseY >= sorcererY && mouseY <= sorcererY + sorcererHeight) {
+                        } else if (mouseX >= sorcerer.x && mouseX <= sorcerer.x + sorcerer.width && mouseY >= sorcerer.y && mouseY <= sorcerer.y + sorcerer.height) {
                             setCursor(clicker);
                             ui.commandNum = 2;
-                        } else if (mouseX >= backX && mouseX <= backX + backWidth && mouseY >= backY && mouseY <= backY + backHeight) {
+                        } else if (mouseX >= back.x && mouseX <= back.x + back.width && mouseY >= back.y && mouseY <= back.y + back.height) {
                             setCursor(clicker);
                             ui.commandNum = 3;
                         } else {

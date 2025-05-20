@@ -92,14 +92,14 @@ public class UI {
              drawTitleScreen();
              if (gp.keyH.click && gp.ui.titleScreenState == 0) {
                  g2.setColor(Color.white);
-                 g2.drawRect(gp.newGameX, gp.newGameY, gp.newGameWidth, gp.newGameHeight);
-                 g2.drawRect(gp.loadGameX, gp.loadGameY, gp.loadGameWidth, gp.loadGameHeight);
-                 g2.drawRect(gp.quitX, gp.quitY, gp.quitWidth, gp.quitHeight);
+                 g2.drawRect(gp.newGame.x, gp.newGame.y, gp.newGame.width, gp.newGame.height);
+                 g2.drawRect(gp.loadGame.x, gp.loadGame.y, gp.loadGame.width, gp.loadGame.height);
+                 g2.drawRect(gp.quitGame.x, gp.quitGame.y, gp.quitGame.width, gp.quitGame.height);
              } else if (gp.keyH.click && gp.ui.titleScreenState == 1) {
-                 g2.drawRect(gp.thiefX, gp.thiefY, gp.thiefWidth, gp.thiefHeight);
-                 g2.drawRect(gp.fighterX, gp.fighterY, gp.fighterWidth, gp.fighterHeight);
-                 g2.drawRect(gp.sorcererX, gp.sorcererY, gp.sorcererWidth, gp.sorcererHeight);
-                 g2.drawRect(gp.backX, gp.backY, gp.backWidth, gp.backHeight);
+                 g2.drawRect(gp.thief.x, gp.thief.y, gp.thief.width, gp.thief.height);
+                 g2.drawRect(gp.fighter.x, gp.fighter.y, gp.fighter.width, gp.fighter.height);
+                 g2.drawRect(gp.sorcerer.x, gp.sorcerer.y, gp.sorcerer.width, gp.sorcerer.height);
+                 g2.drawRect(gp.back.x, gp.back.y, gp.back.width, gp.back.height);
              }
          }
 

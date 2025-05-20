@@ -11,9 +11,9 @@ public class NPC_OldMan extends Entity {
         direction = "down";
         speed = 1;
 
-        solidArea.x = 0;
+        solidArea.x = 8;
         solidArea.y = 16;
-        solidArea.width = 48;
+        solidArea.width = 32;
         solidArea.height = 32;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -34,28 +34,34 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setAction() {
-        actionLockCounter++;
+        if(onPath) {
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize, goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
-        if(actionLockCounter == 100) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // pick a number from 1 to 100
+            searchPath(goalCol, goalRow);
+        } else {
+            actionLockCounter++;
 
-            if (i < 26) {
-                direction = "up";
+            if (actionLockCounter == 120) {
+                Random random = new Random();
+                int i = random.nextInt(100) + 1; // pick a number from 1 to 100
+
+                if (i < 26) {
+                    direction = "up";
+                }
+
+                if (i > 25 && i < 51) {
+                    direction = "down";
+                }
+
+                if (i > 49 && i < 76) {
+                    direction = "left";
+                }
+
+                if (i > 75 && i < 101) {
+                    direction = "right";
+                }
+                actionLockCounter = 0;
             }
-
-            if (i > 25 && i < 51) {
-                direction = "down";
-            }
-
-            if (i > 49 && i < 76) {
-                direction = "left";
-            }
-
-            if (i > 75 && i < 101) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
         }
     }
 
@@ -68,5 +74,6 @@ public class NPC_OldMan extends Entity {
 
     public void speak() {
         super.speak();
+        onPath = true;
     }
 }
