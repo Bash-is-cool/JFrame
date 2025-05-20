@@ -3,9 +3,6 @@ package environment;
 import main.GamePanel;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class Lighting {
