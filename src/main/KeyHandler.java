@@ -67,6 +67,11 @@ public class KeyHandler implements KeyListener {
         else if(gp.gameState == gp.tradeState) {
             tradeState(code);
         }
+
+        // MAP STATE
+        else if (gp.gameState == gp.mapState) {
+            mapState(code);
+        }
     }
 
     public void titleState(int code) {
@@ -183,6 +188,14 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.optionState;
         }
 
+        if(code == KeyEvent.VK_M) {
+            gp.gameState = gp.mapState;
+        }
+
+        if(code == KeyEvent.VK_X) {
+            gp.map.miniMapOn = !gp.map.miniMapOn;
+        }
+
         // DEBUG
         if (code == KeyEvent.VK_T) {
             checkDrawTime = !checkDrawTime;
@@ -204,16 +217,6 @@ public class KeyHandler implements KeyListener {
                 case 1:
                     gp.tileM.loadMap("/maps/interior01.txt", 1);
                     break;
-            }
-        }
-
-        if(code == KeyEvent.VK_M) {
-            if(muted) {
-                gp.stopMusic();
-                muted = !muted;
-            } else {
-                gp.playMusic(0);
-                muted = !muted;
             }
         }
 
@@ -444,6 +447,12 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_ESCAPE) {
                 gp.ui.subState = 0;
             }
+        }
+    }
+
+    public void mapState(int code) {
+        if(code == KeyEvent.VK_M) {
+            gp.gameState = gp.playState;
         }
     }
 

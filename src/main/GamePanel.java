@@ -5,6 +5,7 @@ import entity.Entity;
 import entity.Player;
 import environment.EnvironmentManager;
 import interactiveTile.InteractiveTile;
+import tile.Map;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public EventHandler eventHandler = new EventHandler(this);
     public PathFinder pFinder = new PathFinder(this);
     public EnvironmentManager eManager = new EnvironmentManager(this);
+    Map map = new Map(this);
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -75,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int transitionState = 7;
     public final int tradeState = 8;
     public final int sleepState = 9;
+    public final int mapState = 10;
 
     // FPS
     int FPS = 60;
@@ -443,7 +446,13 @@ public class GamePanel extends JPanel implements Runnable {
         // TITLE SCREEN
         if(gameState == titleState) {
             ui.draw(g2);
-        } else {
+        } 
+        // MAP SCREEN
+        else if (gameState == mapState) {
+            map.drawFullMapScreen(g2);
+        }
+        // OTHERS
+        else {
             // TILE
             tileM.draw(g2);
 
@@ -506,6 +515,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             // ENVIROMENT
             eManager.draw(g2);
+
+            // MINI MAP
+            map.drawMiniMap(g2);
 
             // UI
             ui.draw(g2);
