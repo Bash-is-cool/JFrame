@@ -128,6 +128,11 @@ public class UI {
          if(gp.gameState == gp.tradeState) {
              drawTradeScreen();
          }
+
+         // SLEEP STATE
+         if(gp.gameState == gp.sleepState) {
+             drawSleepScreen();
+         }
      }
 
      public void drawGameOverScreen() {
@@ -349,6 +354,29 @@ public class UI {
          g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 24, null);
          textY += gp.tileSize;
          g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 24, null);
+     }
+
+     public void drawSleepScreen() {
+         counter++;
+
+         if(counter < 120) {
+             gp.eManager.lighting.filterAlpha += 0.01f;
+             if(gp.eManager.lighting.filterAlpha > 1f) {
+                 gp.eManager.lighting.filterAlpha = 1;
+             }
+         }
+
+         if(counter >= 120) {
+             gp.eManager.lighting.filterAlpha -= 0.01f;
+             if(gp.eManager.lighting.filterAlpha <= 0f) {
+                 gp.eManager.lighting.filterAlpha = 0;
+                 counter = 0;
+                 gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                 gp.eManager.lighting.dayCounter = 0;
+                 gp.gameState = gp.playState;
+                 gp.player.getPlayerImage();
+             }
+         }
      }
 
     public void saveSlotPosition() {
