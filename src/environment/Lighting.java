@@ -85,7 +85,7 @@ public class Lighting {
         // Check state of day
         if(dayState == day) {
             dayCounter++;
-            if(dayCounter > 600) {
+            if(dayCounter > 36000) {
                 dayState = dusk;
                 dayCounter = 0;
             }
@@ -101,7 +101,7 @@ public class Lighting {
 
         if(dayState == night) {
             dayCounter++;
-            if(dayCounter > 600) {
+            if(dayCounter > 72000) {
                 dayState = dawn;
                 dayCounter = 0;
             }
@@ -122,7 +122,7 @@ public class Lighting {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // DEBUG
-        String currentTime = switch (dayState) {
+        /*String currentTime = switch (dayState) {
             case day -> "Day";
             case dusk -> "Dusk";
             case night -> "Night";
@@ -131,6 +131,6 @@ public class Lighting {
         };
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString(currentTime, 800, 500);
+        g2.drawString(currentTime, 800, 500);*/
     }
 }
