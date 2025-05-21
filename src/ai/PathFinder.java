@@ -190,7 +190,7 @@ public class PathFinder {
         Node current = goalNode;
 
         while(current != startNode) {
-            pathList.addFirst(current);
+            pathList.add(0, current);
             current = current.parent;
         }
     }

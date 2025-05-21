@@ -47,6 +47,8 @@ public class SaveLoad {
             ds.exp = gp.player.exp;
             ds.nextLevelExp = gp.player.nextLevelExp;
             ds.coin = gp.player.coin;
+            ds.worldX = gp.player.worldX;
+            ds.worldY = gp.player.worldY;
 
             // PLAYER INVENTORY
             for(int i = 0; i < gp.player.inventory.size(); i++) {
@@ -106,6 +108,8 @@ public class SaveLoad {
             gp.player.exp = ds.exp;
             gp.player.nextLevelExp = ds.nextLevelExp;
             gp.player.coin = ds.coin;
+            gp.player.worldX = ds.worldX;
+            gp.player.worldY = ds.worldY;
 
             // PLAYER INVENTORY
             gp.player.inventory.clear();

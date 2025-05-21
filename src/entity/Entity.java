@@ -21,14 +21,15 @@ public class Entity  {
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX;
     public int solidAreaDefaultY;
-    String[] dialogues = new String[20];
+    public String[][] dialogues = new String[20][20];
     public Entity attacker;
 
     // STATE
     public int worldX, worldY;
     public String direction = "down";
     public int spriteNum = 1;
-    int dialogueIndex = 0;
+    public int dialogueSet = 0;
+    public int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
     public boolean attacking = false;
@@ -124,14 +125,9 @@ public class Entity  {
         return image;
     }
 
-    public void speak() {
-        if(dialogues[dialogueIndex] == null) {
-            dialogueIndex = 0;
-        }
+    public void speak() {}
 
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
-
+    public void facePlayer() {
         switch(gp.player.direction) {
             case "up":
                 direction = "down";
@@ -146,6 +142,12 @@ public class Entity  {
                 direction = "left";
                 break;
         }
+    }
+
+    public void startDialogue(Entity entity, int setNum) {
+        gp.gameState = gp.dialogueState;
+        gp.ui.npc = entity;
+        dialogueSet = setNum;
     }
 
     public void interact() {}
@@ -729,8 +731,8 @@ public class Entity  {
 
         if(gp.pFinder.search()) {
             // Next worldX & worldY
-            int nextX = gp.pFinder.pathList.getFirst().col * gp.tileSize;
-            int nextY = gp.pFinder.pathList.getFirst().row * gp.tileSize;
+            int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
 
             // Entity's solidArea position
             int enLeftX = worldX + solidArea.x;
@@ -848,4 +850,16 @@ public class Entity  {
     }
 
     public void setLoot(Entity loot) {}
+
+    public void restCounters() {
+        actionLockCounter = 0;
+        invincibleCounter = 0;
+        spriteCounter = 0;
+        shotAvailableCounter = 0;
+        dyingCounter = 0;
+        hpBarCounter = 0;
+        knockBackCounter = 0;
+        guardCounter = 0;
+        offBalanceCounter = 0;
+    }
 }

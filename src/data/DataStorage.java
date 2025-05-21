@@ -1,7 +1,5 @@
 package data;
 
-import entity.Entity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,6 +15,8 @@ public class DataStorage implements Serializable {
     int exp;
     int nextLevelExp;
     int coin;
+    int worldX;
+    int worldY;
 
     // PLAYER INVENTORY
     ArrayList<String> itemNames = new ArrayList<>();

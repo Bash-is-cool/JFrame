@@ -246,7 +246,7 @@ public class KeyHandler implements KeyListener {
     public void dialogueState(int code) {
         long time = System.currentTimeMillis();
         if(code == KeyEvent.VK_ENTER && checkEnter(time)) {
-            gp.gameState = gp.playState;
+            enterPressed = true;
         }
     }
 
