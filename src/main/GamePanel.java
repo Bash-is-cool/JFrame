@@ -430,10 +430,7 @@ public class GamePanel extends JPanel implements Runnable {
                 iTile[currentMap][i].update();
             }
         }
-
-        if(gameState == pauseState) {
-
-        }
+        eManager.update();
     }
 
     public void drawToTempScreen() {
