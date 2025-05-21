@@ -1,6 +1,7 @@
 package main;
 
 import ai.PathFinder;
+import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
 import environment.EnvironmentManager;
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pFinder = new PathFinder(this);
     public EnvironmentManager eManager = new EnvironmentManager(this);
     Map map = new Map(this);
+    SaveLoad saveLoad = new SaveLoad(this);
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -294,15 +296,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void resetGame(boolean restart) {
         player.setDefaultPositions();
-        player.restoreLifeAndMana();
+        player.restoreStatus();
         assetSetter.setNPC();
         assetSetter.setMonster();
 
         if(restart) {
             player.setDefault();
-            player.setItems();
             assetSetter.setObject();
             assetSetter.setInteractiveTile();
+            eManager.lighting.resetDay();
         }
     }
 

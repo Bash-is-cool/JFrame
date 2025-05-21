@@ -99,6 +99,8 @@ public class KeyHandler implements KeyListener {
                         gp.ui.titleScreenState = 1;
                         break;
                     case 1:
+                        gp.saveLoad.load();
+                        gp.gameState = gp.playState;
                         break;
                     case 2:
                         System.exit(0);
@@ -133,8 +135,8 @@ public class KeyHandler implements KeyListener {
                         gp.gameState = gp.playState;
                         break;
                     case 1:
-                        gp.playMusic(0);
                         gp.gameState = gp.playState;
+                        gp.playMusic(0);
                         break;
                     case 2:
                         gp.playMusic(0);
