@@ -98,6 +98,7 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Axe(gp));
     }
 
     public int getAttack() {
@@ -473,6 +474,7 @@ public class Player extends Entity {
             gp.playSE(8);
             gp.gameState = gp.dialogueState;
             life = maxLife;
+            setDialogue();
             startDialogue(this, 0);
         }
     }
