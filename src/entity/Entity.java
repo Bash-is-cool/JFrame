@@ -23,6 +23,7 @@ public class Entity  {
     public int solidAreaDefaultY;
     public String[][] dialogues = new String[20][20];
     public Entity attacker;
+    public Entity linkedEntity;
 
     // STATE
     public int worldX, worldY;
@@ -106,7 +107,7 @@ public class Entity  {
     public final int typePickupOnly = 7;
     public final int typeObstacle = 8;
     public final int typeLight = 9;
-
+    public final int typePickaxe = 10;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -862,4 +863,6 @@ public class Entity  {
         guardCounter = 0;
         offBalanceCounter = 0;
     }
+
+    public void move(String direction) {}
 }
