@@ -36,7 +36,7 @@ public class MON_Bat extends Entity {
 
     public void getImage() {
         up1 = setup("/monster/bat_down_1", gp.tileSize, gp.tileSize);
-        up2 = setup("/monsterbat_down_2", gp.tileSize, gp.tileSize);
+        up2 = setup("/monster/bat_down_2", gp.tileSize, gp.tileSize);
         down1 = setup("/monster/bat_down_1", gp.tileSize, gp.tileSize);
         down2 = setup("/monster/bat_down_2", gp.tileSize, gp.tileSize);
         left1 = setup("/monster/bat_down_1", gp.tileSize, gp.tileSize);
