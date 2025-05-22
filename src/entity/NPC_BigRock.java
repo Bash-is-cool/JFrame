@@ -6,7 +6,6 @@ import main.GamePanel;
 import object.OBJ_Door_Iron;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class NPC_BigRock extends Entity {
     public static final String npcName = "Big Rock";
@@ -115,8 +114,8 @@ public class NPC_BigRock extends Entity {
                 }
             } else {
                 if (linkedEntity == interactiveTile) {
+                    linkedEntity = null;
                 }
-                linkedEntity = null;
             }
         }
 

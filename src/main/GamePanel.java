@@ -562,6 +562,7 @@ public class GamePanel extends JPanel implements Runnable {
             if(nextArea == dungeon) {
                 playMusic(20);
             }
+            assetSetter.setNPC();
         }
         currentArea = nextArea;
         assetSetter.setMonster();
