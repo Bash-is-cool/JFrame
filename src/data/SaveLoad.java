@@ -13,24 +13,6 @@ public class SaveLoad {
         this.gp = gp;
     }
 
-    public Entity getObject(String name) {
-
-        return switch (name) {
-            case "Woodcutter's Axe" -> new OBJ_Axe(gp);
-            case "Boots" -> new OBJ_Boots(gp);
-            case "Key" -> new OBJ_Key(gp);
-            case "Lantern" -> new OBJ_Lantern(gp);
-            case "Red Potion" -> new OBJ_Potion_Red(gp);
-            case "Blue Shield" -> new OBJ_Shield_Blue(gp);
-            case "Wood Shield" -> new OBJ_Shield_Wood(gp);
-            case "Normal Sword" -> new OBJ_Sword_Normal(gp);
-            case "Tent" -> new OBJ_Tent(gp);
-            case "Door" -> new OBJ_Door(gp);
-            case "Chest" -> new OBJ_Chest(gp);
-            default -> null;
-        };
-    }
-
     public void save() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
@@ -114,7 +96,7 @@ public class SaveLoad {
             // PLAYER INVENTORY
             gp.player.inventory.clear();
             for(int i = 0; i < ds.itemNames.size(); i++) {
-                gp.player.inventory.add(getObject(ds.itemNames.get(i)));
+                gp.player.inventory.add(gp.eGenerator.getObject(ds.itemNames.get(i)));
                 gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
             }
 
@@ -131,11 +113,11 @@ public class SaveLoad {
                     if(ds.mapObjectNames[mapNum][i].equals("NA")) {
                         gp.obj[mapNum][i] = null;
                     } else {
-                        gp.obj[mapNum][i] = getObject(ds.mapObjectNames[mapNum][i]);
+                        gp.obj[mapNum][i] = gp.eGenerator.getObject(ds.mapObjectNames[mapNum][i]);
                         gp.obj[mapNum][i].worldX = ds.mapObjectWorldX[mapNum][i];
                         gp.obj[mapNum][i].worldY = ds.mapObjectWorldY[mapNum][i];
                         if(ds.mapObjectLootNames[mapNum][i] != null) {
-                            gp.obj[mapNum][i].loot = getObject(ds.mapObjectLootNames[mapNum][i]);
+                            gp.obj[mapNum][i].loot = gp.eGenerator.getObject(ds.mapObjectLootNames[mapNum][i]);
                         }
                         gp.obj[mapNum][i].opened = ds.mapObjectOpened[mapNum][i];
                         if(gp.obj[mapNum][i].opened) {
@@ -144,6 +126,7 @@ public class SaveLoad {
                     }
                 }
             }
+            gp.playMusic(0);
         } catch(IOException e) {
             System.out.println("Load Exception!");
         } catch (ClassNotFoundException e) {
