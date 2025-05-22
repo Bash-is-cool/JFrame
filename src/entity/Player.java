@@ -51,7 +51,7 @@ public class Player extends Entity {
         maxMana = 4;
         mana = maxMana;
         ammo = 10;
-        strength = 1;
+        strength = 5;
         dexterity = 1;
         exp = 0;
         nextLevelExp = 5;
@@ -319,10 +319,13 @@ public class Player extends Entity {
             mana = maxMana;
         }
 
-        if(life <= 0) {
-            gp.ui.commandNum = -1;
-            gp.gameState = gp.gameOverState;
-            gp.playSE(13);
+        if(!gp.keyH.op) {
+            if(life <= 0) {
+                gp.ui.commandNum = -1;
+                gp.gameState = gp.gameOverState;
+                gp.playSE(13);
+            }
+        } else {
         }
     }
 

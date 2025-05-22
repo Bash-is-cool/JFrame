@@ -9,12 +9,13 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed;
     long lastEnterPressed;
     long enterCooldown = 500;
+    public boolean shotKeyPressed;
+
     // DEBUG
     boolean checkDrawTime = false;
     public boolean hitBox = false;
     public boolean click = false;
-    public boolean muted = true;
-    public boolean shotKeyPressed;
+    public boolean op = false;
     Graphics2D g2;
 
     public KeyHandler(GamePanel gp) {
@@ -224,6 +225,10 @@ public class KeyHandler implements KeyListener {
                     gp.tileM.loadMap("/maps/interior01.txt", 1);
                     break;
             }
+        }
+
+        if (code == KeyEvent.VK_Q) {
+            op = !op;
         }
 
         if(code == KeyEvent.VK_H) {

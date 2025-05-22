@@ -5,7 +5,6 @@ import main.GamePanel;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Heart;
 import object.OBJ_Mana_Crystal;
-import object.OBJ_Rock;
 
 import java.util.Random;
 
@@ -58,7 +57,7 @@ public class MON_GreenSlime extends Entity {
             checkStartChasingOrNot(gp.player, 5, 100);
 
             // Get a random direction
-            getRandomDirection();
+            getRandomDirection(120);
         }
     }
 

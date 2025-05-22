@@ -128,6 +128,12 @@ public class CollisionChecker {
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
+        // Use a temporary direction when it's being knocked back
+        String direction = entity.direction;
+        if(entity.knockBack) {
+            direction = entity.knockBackDirection;
+        }
+
         for(int i = 0; i < gp.obj[1].length; i++) {
             if(gp.obj[gp.currentMap][i] != null) {
                 // Get entities solid area position
@@ -137,7 +143,7 @@ public class CollisionChecker {
                 gp.obj[gp.currentMap][i].solidArea.x = gp.obj[gp.currentMap][i].worldX + gp.obj[gp.currentMap][i].solidArea.x;
                 gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].worldY + gp.obj[gp.currentMap][i].solidArea.y;
 
-                switch(entity.direction) {
+                switch(direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed;
                         break;

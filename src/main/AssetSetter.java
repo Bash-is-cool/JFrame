@@ -6,9 +6,11 @@ import entity.NPC_OldMan;
 import interactiveTile.IT_DestructibleWall;
 import interactiveTile.IT_DryTree;
 import interactiveTile.IT_MetalPlate;
+import monster.MON_Bat;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
 import monster.MON_RedSlime;
+import monster.MON_SkeletonLord;
 import object.*;
 
 public class AssetSetter {
@@ -86,8 +88,8 @@ public class AssetSetter {
 
         //MAP = 0
         gp.npc[mapNum][i] = new NPC_OldMan(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*21;
-        gp.npc[mapNum][i].worldY = gp.tileSize*21;
+        gp.npc[mapNum][i].worldX = gp.tileSize * 21;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 21;
         i++;
 
         //MAP = 1
@@ -95,24 +97,24 @@ public class AssetSetter {
         i = 0;
 
         gp.npc[mapNum][i] = new NPC_Merchant(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*12;
-        gp.npc[mapNum][i].worldY = gp.tileSize*7;
+        gp.npc[mapNum][i].worldX = gp.tileSize * 12;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 7;
         i++;
 
         mapNum = 2;
         i = 0;
 
         gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*20;
-        gp.npc[mapNum][i].worldY = gp.tileSize*25;
+        gp.npc[mapNum][i].worldX = gp.tileSize * 20;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 25;
         i++;
         gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*11;
-        gp.npc[mapNum][i].worldY = gp.tileSize*18;
+        gp.npc[mapNum][i].worldX = gp.tileSize * 11;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 18;
         i++;
         gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*23;
-        gp.npc[mapNum][i].worldY = gp.tileSize*14;
+        gp.npc[mapNum][i].worldX = gp.tileSize * 23;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 14;
         i++;
     }
 
@@ -132,18 +134,54 @@ public class AssetSetter {
         gp.monster[mapNum][i].worldY = gp.tileSize * 33;
         i++;
         gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*34;
-        gp.monster[mapNum][i].worldY = gp.tileSize*11;
+        gp.monster[mapNum][i].worldX = gp.tileSize * 34;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 11;
         i++;
 
         gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*38;
-        gp.monster[mapNum][i].worldY = gp.tileSize*7;
+        gp.monster[mapNum][i].worldX = gp.tileSize * 38;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 7;
         i++;
 
         gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*37;
-        gp.monster[mapNum][i].worldY = gp.tileSize*9;
+        gp.monster[mapNum][i].worldX = gp.tileSize * 37;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 9;
+        i++;
+
+        mapNum = 2;
+        i = 0;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 34;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 39;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 36;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 25;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 39;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 26;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 28;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 11;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 10;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 19;
+        i++;
+
+        mapNum = 3;
+        i = 0;
+
+        gp.monster[mapNum][i] = new MON_SkeletonLord(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 23;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 16;
         i++;
     }
 
