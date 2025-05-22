@@ -23,7 +23,7 @@ public class Map extends TileManager {
 
         for(int i = 0; i < gp.maxMap; i++) {
             worldMap[i] = new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = (Graphics2D) worldMap[i].getGraphics();
+            Graphics2D g2 = (Graphics2D) worldMap[i].createGraphics();
 
             int col = 0;
             int row = 0;
