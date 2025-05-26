@@ -73,6 +73,11 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.mapState) {
             mapState(code);
         }
+
+        // FISHING STATE
+        else if(gp.gameState == gp.fishingState) {
+            fishingState(code);
+        }
     }
 
     public void titleState(int code) {
@@ -239,6 +244,10 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_1) {
             gp.assetSetter.setObject();
             gp.assetSetter.setMonster();
+        }
+
+        if(code == KeyEvent.VK_P) {
+            gp.gameState = gp.fishingState;
         }
     }
 
@@ -466,6 +475,27 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
     }
+
+    public void fishingState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.playState;
+            gp.ui.resetFishing();
+        }
+
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.handleFishingInput("UP");
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.handleFishingInput("DOWN");
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            gp.ui.handleFishingInput("LEFT");
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            gp.ui.handleFishingInput("RIGHT");
+        }
+    }
+
 
     @Override
     public void keyReleased(KeyEvent e) {

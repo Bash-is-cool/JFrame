@@ -12,6 +12,9 @@ import monster.MON_Orc;
 import monster.MON_RedSlime;
 import monster.MON_SkeletonLord;
 import object.*;
+import object.tool.OBJ_Axe;
+import object.tool.OBJ_Fishing_Rod;
+import object.tool.OBJ_Pickaxe;
 
 public class AssetSetter {
     GamePanel gp;
@@ -53,6 +56,9 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 17;
         gp.obj[mapNum][i].worldY = gp.tileSize * 20;
         i++;
+        gp.obj[mapNum][i] = new OBJ_Fishing_Rod(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 16;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
 
         mapNum = 2;
         i = 0;

@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>EntityGenerator.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EntityGenerator.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">main</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Entity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">object</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">EntityGenerator </span><span class="s2">{</span>
+    <span class="s1">GamePanel gp</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">EntityGenerator</span><span class="s2">(</span><span class="s1">GamePanel gp</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gp </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Entity getObject</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">) {</span>
+
+        <span class="s0">return switch </span><span class="s2">(</span><span class="s1">name</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s1">OBJ_Axe</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Axe</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Boots</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Boots</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Chest</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Chest</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Coin_Bronze</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Coin_Bronze</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Door</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Door</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Door_Iron</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Door_Iron</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Fireball</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Fireball</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Heart</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Heart</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Key</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Key</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Lantern</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Lantern</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Mana_Crystal</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Mana_Crystal</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Pickaxe</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Pickaxe</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Potion_Red</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Potion_Red</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Rock</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Rock</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Shield_Blue</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Shield_Blue</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Shield_Wood</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Shield_Wood</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Sword_Normal</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Sword_Normal</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s1">OBJ_Tent</span><span class="s2">.</span><span class="s1">objName -&gt; </span><span class="s0">new </span><span class="s1">OBJ_Tent</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+            <span class="s0">default </span><span class="s1">-&gt; </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s2">};</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

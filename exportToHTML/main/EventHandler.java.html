@@ -1,0 +1,160 @@
+<html>
+<head>
+<title>EventHandler.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EventHandler.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">main</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Entity</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">EventHandler </span><span class="s2">{</span>
+    <span class="s1">GamePanel gp</span><span class="s2">;</span>
+    <span class="s1">EventRect</span><span class="s2">[][][] </span><span class="s1">eventRect</span><span class="s2">;</span>
+    <span class="s1">Entity eventMaster</span><span class="s2">;</span>
+
+    <span class="s0">int </span><span class="s1">previousEventX</span><span class="s2">, </span><span class="s1">previousEventY</span><span class="s2">;</span>
+    <span class="s0">boolean </span><span class="s1">canTouchEvent </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+    <span class="s0">int </span><span class="s1">tempMap</span><span class="s2">, </span><span class="s1">tempCol</span><span class="s2">, </span><span class="s1">tempRow</span><span class="s2">;</span>
+
+
+    <span class="s0">public </span><span class="s1">EventHandler</span><span class="s2">(</span><span class="s1">GamePanel gp</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gp </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">;</span>
+
+        <span class="s1">eventMaster </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Entity</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">);</span>
+
+        <span class="s1">eventRect </span><span class="s2">= </span><span class="s0">new </span><span class="s1">EventRect</span><span class="s2">[</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxMap</span><span class="s2">][</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldCol</span><span class="s2">][</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldRow</span><span class="s2">];</span>
+
+        <span class="s0">int </span><span class="s1">map </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s0">int </span><span class="s1">col </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s0">int </span><span class="s1">row </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s0">while</span><span class="s2">(</span><span class="s1">map </span><span class="s2">&lt; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxMap </span><span class="s2">&amp;&amp; </span><span class="s1">col </span><span class="s2">&lt; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldCol </span><span class="s2">&amp;&amp; </span><span class="s1">row </span><span class="s2">&lt; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldRow</span><span class="s2">) {</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">] = </span><span class="s0">new </span><span class="s1">EventRect</span><span class="s2">();</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">x </span><span class="s2">= </span><span class="s3">23</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">y </span><span class="s2">= </span><span class="s3">23</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">width </span><span class="s2">= </span><span class="s3">2</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">height </span><span class="s2">= </span><span class="s3">2</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">eventRectDefaultX </span><span class="s2">= </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">x</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">eventRectDefaultY </span><span class="s2">= </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">y</span><span class="s2">;</span>
+
+            <span class="s1">col</span><span class="s2">++;</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">col </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldCol</span><span class="s2">) {</span>
+                <span class="s1">col </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s1">row</span><span class="s2">++;</span>
+
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">row </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">maxWorldRow</span><span class="s2">) {</span>
+                    <span class="s1">row </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                    <span class="s1">map</span><span class="s2">++;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s1">setDialogue</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDialogue</span><span class="s2">() {</span>
+        <span class="s1">eventMaster</span><span class="s2">.</span><span class="s1">dialogues</span><span class="s2">[</span><span class="s3">0</span><span class="s2">][</span><span class="s3">0</span><span class="s2">] = </span><span class="s4">&quot;You fall into a pit!&quot;</span><span class="s2">;</span>
+        <span class="s1">eventMaster</span><span class="s2">.</span><span class="s1">dialogues</span><span class="s2">[</span><span class="s3">1</span><span class="s2">][</span><span class="s3">0</span><span class="s2">] = </span><span class="s4">&quot;You drink the water.</span><span class="s0">\n</span><span class="s4">Your life and mana have been recovered.</span><span class="s0">\n</span><span class="s4">(The progress has been saved)&quot;</span><span class="s2">;</span>
+        <span class="s1">eventMaster</span><span class="s2">.</span><span class="s1">dialogues</span><span class="s2">[</span><span class="s3">1</span><span class="s2">][</span><span class="s3">1</span><span class="s2">] = </span><span class="s4">&quot;Damn, this is good water.&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">checkEvent</span><span class="s2">() {</span>
+        <span class="s5">// CHECK IF PLAYER CHARACTER IS MORE THAN ONE TILE AWAY FROM PREVIOUS EVENT</span>
+        <span class="s0">int </span><span class="s1">xDistance </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">abs</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldX </span><span class="s2">- </span><span class="s1">previousEventX</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">yDistance </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">abs</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldY </span><span class="s2">- </span><span class="s1">previousEventY</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">distance </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s1">xDistance</span><span class="s2">, </span><span class="s1">yDistance</span><span class="s2">);</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">distance </span><span class="s2">&gt; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">tileSize</span><span class="s2">) {</span>
+            <span class="s1">canTouchEvent </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">canTouchEvent</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">27</span><span class="s2">, </span><span class="s3">16</span><span class="s2">, </span><span class="s4">&quot;right&quot;</span><span class="s2">)) </span><span class="s1">damagePit</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dialogueState</span><span class="s2">);</span>
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">23</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s4">&quot;up&quot;</span><span class="s2">)) </span><span class="s1">healPool</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dialogueState</span><span class="s2">);</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">10</span><span class="s2">, </span><span class="s3">39</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">1</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s3">13</span><span class="s2">, </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">indoor</span><span class="s2">); </span><span class="s5">// To Merchant's house</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">1</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s3">13</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">10</span><span class="s2">, </span><span class="s3">39</span><span class="s2">, </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">outside</span><span class="s2">); </span><span class="s5">// To outside</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">1</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s3">9</span><span class="s2">, </span><span class="s4">&quot;up&quot;</span><span class="s2">)) </span><span class="s1">speak</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">npc</span><span class="s2">[</span><span class="s3">1</span><span class="s2">][</span><span class="s3">0</span><span class="s2">]);</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s3">9</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">2</span><span class="s2">, </span><span class="s3">9</span><span class="s2">, </span><span class="s3">41</span><span class="s2">, </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dungeon</span><span class="s2">); </span><span class="s5">// To dungeon</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">2</span><span class="s2">, </span><span class="s3">9</span><span class="s2">, </span><span class="s3">41</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">12</span><span class="s2">, </span><span class="s3">9</span><span class="s2">,</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">outside</span><span class="s2">); </span><span class="s5">// To outside</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">2</span><span class="s2">, </span><span class="s3">8</span><span class="s2">, </span><span class="s3">7</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">3</span><span class="s2">, </span><span class="s3">26</span><span class="s2">, </span><span class="s3">41</span><span class="s2">, </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dungeon</span><span class="s2">); </span><span class="s5">// B1</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">hit</span><span class="s2">(</span><span class="s3">3</span><span class="s2">, </span><span class="s3">26</span><span class="s2">, </span><span class="s3">41</span><span class="s2">, </span><span class="s4">&quot;any&quot;</span><span class="s2">)) </span><span class="s1">teleport</span><span class="s2">(</span><span class="s3">2</span><span class="s2">, </span><span class="s3">8</span><span class="s2">, </span><span class="s3">7</span><span class="s2">, </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dungeon</span><span class="s2">); </span><span class="s5">// B2</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">hit</span><span class="s2">(</span><span class="s0">int </span><span class="s1">map</span><span class="s2">, </span><span class="s0">int </span><span class="s1">col</span><span class="s2">, </span><span class="s0">int </span><span class="s1">row</span><span class="s2">, </span><span class="s1">String reqDirection</span><span class="s2">) {</span>
+        <span class="s0">boolean </span><span class="s1">hit </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">map </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">currentMap</span><span class="s2">) {</span>
+
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">x </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldX </span><span class="s2">+ </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">x</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">y </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldY </span><span class="s2">+ </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">y</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">x </span><span class="s2">= </span><span class="s1">col </span><span class="s2">* </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">tileSize </span><span class="s2">+ </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">x</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">y </span><span class="s2">= </span><span class="s1">row </span><span class="s2">* </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">tileSize </span><span class="s2">+ </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">y</span><span class="s2">;</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">intersects</span><span class="s2">(</span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">]) &amp;&amp; !</span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">eventDone</span><span class="s2">) {</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">direction</span><span class="s2">.</span><span class="s1">contentEquals</span><span class="s2">(</span><span class="s1">reqDirection</span><span class="s2">) || </span><span class="s1">reqDirection</span><span class="s2">.</span><span class="s1">contentEquals</span><span class="s2">(</span><span class="s4">&quot;any&quot;</span><span class="s2">)) {</span>
+                    <span class="s1">hit </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+
+                    <span class="s1">previousEventX </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldX</span><span class="s2">;</span>
+                    <span class="s1">previousEventY </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">worldY</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">x </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidAreaDefaultX</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidArea</span><span class="s2">.</span><span class="s1">y </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">solidAreaDefaultY</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">x </span><span class="s2">= </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">eventRectDefaultX</span><span class="s2">;</span>
+            <span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">y </span><span class="s2">= </span><span class="s1">eventRect</span><span class="s2">[</span><span class="s1">map</span><span class="s2">][</span><span class="s1">col</span><span class="s2">][</span><span class="s1">row</span><span class="s2">].</span><span class="s1">eventRectDefaultY</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">hit</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">damagePit</span><span class="s2">(</span><span class="s0">int </span><span class="s1">gameState</span><span class="s2">) {</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gameState</span><span class="s2">;</span>
+        <span class="s1">eventMaster</span><span class="s2">.</span><span class="s1">startDialogue</span><span class="s2">(</span><span class="s1">eventMaster</span><span class="s2">, </span><span class="s3">0</span><span class="s2">);</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">life</span><span class="s2">--;</span>
+        <span class="s1">canTouchEvent </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">healPool</span><span class="s2">(</span><span class="s0">int </span><span class="s1">gameState</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">enterPressed</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">attackCanceled </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+            <span class="s1">eventMaster</span><span class="s2">.</span><span class="s1">startDialogue</span><span class="s2">(</span><span class="s1">eventMaster</span><span class="s2">, </span><span class="s3">1</span><span class="s2">);</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gameState</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">life </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">maxLife</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">mana </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">maxMana</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">assetSetter</span><span class="s2">.</span><span class="s1">setMonster</span><span class="s2">();</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">saveLoad</span><span class="s2">.</span><span class="s1">save</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">teleport</span><span class="s2">(</span><span class="s0">int </span><span class="s1">map</span><span class="s2">, </span><span class="s0">int </span><span class="s1">col</span><span class="s2">, </span><span class="s0">int </span><span class="s1">row</span><span class="s2">, </span><span class="s0">int </span><span class="s1">area</span><span class="s2">) {</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">transitionState</span><span class="s2">;</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">nextArea </span><span class="s2">= </span><span class="s1">area</span><span class="s2">;</span>
+        <span class="s1">tempMap </span><span class="s2">= </span><span class="s1">map</span><span class="s2">;</span>
+        <span class="s1">tempCol </span><span class="s2">= </span><span class="s1">col</span><span class="s2">;</span>
+        <span class="s1">tempRow </span><span class="s2">= </span><span class="s1">row</span><span class="s2">;</span>
+        <span class="s1">canTouchEvent </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">14</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">speak</span><span class="s2">(</span><span class="s1">Entity entity</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">enterPressed</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dialogueState</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">attackCanceled </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+            <span class="s1">entity</span><span class="s2">.</span><span class="s1">speak</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package object;
+package object.tool;
 
 import entity.Entity;
 import main.GamePanel;
@@ -10,7 +10,7 @@ public class OBJ_Axe extends Entity {
 
         type = typeAxe;
         name = objName;
-        down1 = setup("/objects/axe", gp.tileSize, gp.tileSize);
+        down1 = setup("/objects/tool/16", gp.tileSize, gp.tileSize);
         attackValue = 2;
         attackArea.width = 30;
         attackArea.height = 30;

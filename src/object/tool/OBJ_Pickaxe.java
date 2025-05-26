@@ -1,4 +1,4 @@
-package object;
+package object.tool;
 
 import entity.Entity;
 import main.GamePanel;
@@ -10,7 +10,7 @@ public class OBJ_Pickaxe extends Entity {
 
         type = typePickaxe;
         name = objName;
-        down1 = setup("/objects/pickaxe", gp.tileSize, gp.tileSize);
+        down1 = setup("/objects/tool/09", gp.tileSize, gp.tileSize);
         attackValue = 2;
         attackArea.width = 30;
         attackArea.height = 30;

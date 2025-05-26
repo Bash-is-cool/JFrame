@@ -1,0 +1,532 @@
+<html>
+<head>
+<title>KeyHandler.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #7a7e85;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+KeyHandler.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">main</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyListener</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">KeyHandler </span><span class="s0">implements </span><span class="s1">KeyListener </span><span class="s2">{</span>
+    <span class="s1">GamePanel gp</span><span class="s2">;</span>
+    <span class="s0">public boolean </span><span class="s1">upPressed</span><span class="s2">, </span><span class="s1">downPressed</span><span class="s2">, </span><span class="s1">leftPressed</span><span class="s2">, </span><span class="s1">rightPressed</span><span class="s2">, </span><span class="s1">enterPressed</span><span class="s2">, </span><span class="s1">spacePressed</span><span class="s2">;</span>
+    <span class="s0">long </span><span class="s1">lastEnterPressed</span><span class="s2">;</span>
+    <span class="s0">long </span><span class="s1">enterCooldown </span><span class="s2">= </span><span class="s3">500</span><span class="s2">;</span>
+    <span class="s0">public boolean </span><span class="s1">shotKeyPressed</span><span class="s2">;</span>
+
+    <span class="s4">// DEBUG</span>
+    <span class="s0">boolean </span><span class="s1">checkDrawTime </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">public boolean </span><span class="s1">hitBox </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">public boolean </span><span class="s1">click </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">public boolean </span><span class="s1">op </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s1">Graphics2D g2</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">KeyHandler</span><span class="s2">(</span><span class="s1">GamePanel gp</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gp </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">keyTyped</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">keyPressed</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+        <span class="s0">int </span><span class="s1">code </span><span class="s2">= </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">();</span>
+
+        <span class="s4">// TITLE STATE</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">titleState</span><span class="s2">) {</span>
+            <span class="s1">titleState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// PLAY STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">) {</span>
+            <span class="s1">playState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s4">// PAUSE STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">pauseState</span><span class="s2">) {</span>
+            <span class="s1">pauseState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// DIALOGUE STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">dialogueState</span><span class="s2">) {</span>
+            <span class="s1">dialogueState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// CHARACTER STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">characterState</span><span class="s2">) {</span>
+            <span class="s1">characterState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// OPTION STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">optionState</span><span class="s2">) {</span>
+            <span class="s1">optionState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// GAME OVER STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameOverState</span><span class="s2">) {</span>
+            <span class="s1">gameOverState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// TRADE STATE</span>
+        <span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">tradeState</span><span class="s2">) {</span>
+            <span class="s1">tradeState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// MAP STATE</span>
+        <span class="s0">else if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">== </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">mapState</span><span class="s2">) {</span>
+            <span class="s1">mapState</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">titleState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">long </span><span class="s1">time </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">titleScreenState </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">--;</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&lt; </span><span class="s3">0</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">2</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">++;</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&gt; </span><span class="s3">2</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+                <span class="s0">switch </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">) {</span>
+                    <span class="s0">case </span><span class="s3">0</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">titleScreenState </span><span class="s2">= </span><span class="s3">1</span><span class="s2">;</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                    <span class="s0">case </span><span class="s3">1</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">saveLoad</span><span class="s2">.</span><span class="s1">load</span><span class="s2">();</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                    <span class="s0">case </span><span class="s3">2</span><span class="s2">:</span>
+                        <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_B</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">click </span><span class="s2">= !</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">click</span><span class="s2">;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">draw</span><span class="s2">(</span><span class="s1">g2</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">titleScreenState </span><span class="s2">== </span><span class="s3">1</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">--;</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&lt; </span><span class="s3">0</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">3</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">++;</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&gt; </span><span class="s3">3</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+                <span class="s0">switch </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">) {</span>
+                    <span class="s0">case </span><span class="s3">0</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">playMusic</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                    <span class="s0">case </span><span class="s3">1</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">playMusic</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                    <span class="s0">case </span><span class="s3">2</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">playMusic</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                    <span class="s0">case </span><span class="s3">3</span><span class="s2">:</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">titleScreenState </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                        <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                        <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_B</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">click </span><span class="s2">= !</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">keyH</span><span class="s2">.</span><span class="s1">click</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">draw</span><span class="s2">(</span><span class="s1">g2</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">playState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">long </span><span class="s1">time </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W</span><span class="s2">) {</span>
+            <span class="s1">upPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S</span><span class="s2">) {</span>
+            <span class="s1">downPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_RIGHT </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_D</span><span class="s2">) {</span>
+            <span class="s1">rightPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_LEFT </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_A</span><span class="s2">) {</span>
+            <span class="s1">leftPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_P</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">pauseState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_E</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">characterState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_F</span><span class="s2">) {</span>
+            <span class="s1">shotKeyPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ESCAPE</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">optionState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_M</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">mapState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_X</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">map</span><span class="s2">.</span><span class="s1">miniMapOn </span><span class="s2">= !</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">map</span><span class="s2">.</span><span class="s1">miniMapOn</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_SPACE</span><span class="s2">) {</span>
+            <span class="s1">spacePressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s4">// DEBUG</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_T</span><span class="s2">) {</span>
+            <span class="s1">checkDrawTime </span><span class="s2">= !</span><span class="s1">checkDrawTime</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_B</span><span class="s2">) {</span>
+            <span class="s1">hitBox </span><span class="s2">= !</span><span class="s1">hitBox</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+            <span class="s1">enterPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_R</span><span class="s2">) {</span>
+            <span class="s0">switch</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">currentMap</span><span class="s2">) {</span>
+                <span class="s0">case </span><span class="s3">0</span><span class="s2">:</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">tileM</span><span class="s2">.</span><span class="s1">loadMap</span><span class="s2">(</span><span class="s5">&quot;/maps/worldV3.txt&quot;</span><span class="s2">, </span><span class="s3">0</span><span class="s2">);</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s0">case </span><span class="s3">1</span><span class="s2">:</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">tileM</span><span class="s2">.</span><span class="s1">loadMap</span><span class="s2">(</span><span class="s5">&quot;/maps/interior01.txt&quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">);</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_Q</span><span class="s2">) {</span>
+            <span class="s1">op </span><span class="s2">= !</span><span class="s1">op</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_H</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">life </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">maxLife</span><span class="s2">;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">mana </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">maxMana</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_1</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">assetSetter</span><span class="s2">.</span><span class="s1">setObject</span><span class="s2">();</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">assetSetter</span><span class="s2">.</span><span class="s1">setMonster</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">pauseState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_P</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">dialogueState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">long </span><span class="s1">time </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+            <span class="s1">enterPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">characterState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_E</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">selectItem</span><span class="s2">();</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">10</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">saveSlotPosition</span><span class="s2">();</span>
+        <span class="s1">playerInventory</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">playerInventory</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotRow </span><span class="s2">!= </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotRow</span><span class="s2">--;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_A </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_LEFT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotCol </span><span class="s2">!= </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotCol</span><span class="s2">--;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotRow </span><span class="s2">!= </span><span class="s3">3</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotRow</span><span class="s2">++;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_D </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_RIGHT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotCol </span><span class="s2">!= </span><span class="s3">4</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">playerSlotCol</span><span class="s2">++;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">npcInventory</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotRow </span><span class="s2">!= </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotRow</span><span class="s2">--;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_A </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_LEFT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotCol </span><span class="s2">!= </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotCol</span><span class="s2">--;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotRow </span><span class="s2">!= </span><span class="s3">3</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotRow</span><span class="s2">++;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_D </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_RIGHT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotCol </span><span class="s2">!= </span><span class="s3">4</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">npcSlotCol</span><span class="s2">++;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">optionState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">long </span><span class="s1">time </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ESCAPE</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+            <span class="s1">enterPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">int </span><span class="s1">maxCommandNum </span><span class="s2">= </span><span class="s0">switch </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s3">0 </span><span class="s1">-&gt; </span><span class="s3">5</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">3 </span><span class="s1">-&gt; </span><span class="s3">1</span><span class="s2">;</span>
+            <span class="s0">default </span><span class="s1">-&gt; </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s2">};</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">--;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&lt; </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s1">maxCommandNum</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">++;</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&gt; </span><span class="s1">maxCommandNum</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_A </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_LEFT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">1 </span><span class="s2">&amp;&amp; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">&gt; </span><span class="s3">0</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">--;</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">checkVolume</span><span class="s2">();</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">10</span><span class="s2">);</span>
+                <span class="s2">}</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">2 </span><span class="s2">&amp;&amp; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">&gt; </span><span class="s3">0</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">--;</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">10</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_D </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_RIGHT</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">1 </span><span class="s2">&amp;&amp; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">&lt; </span><span class="s3">5</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">++;</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">checkVolume</span><span class="s2">();</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">10</span><span class="s2">);</span>
+                <span class="s2">}</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">2 </span><span class="s2">&amp;&amp; </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">&lt; </span><span class="s3">5</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">++;</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">10</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">gameOverState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">long </span><span class="s1">time </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">--;</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&lt; </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">1</span><span class="s2">;</span>
+            <span class="s2">}</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">++;</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&gt; </span><span class="s3">1</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+            <span class="s2">}</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER </span><span class="s2">&amp;&amp; </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s1">time</span><span class="s2">)) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">resetGame</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+            <span class="s2">} </span><span class="s0">else if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">== </span><span class="s3">1</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">titleScreenState </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">stopMusic</span><span class="s2">();</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">titleState</span><span class="s2">;</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">resetGame</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">tradeState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER</span><span class="s2">) {</span>
+            <span class="s1">enterPressed </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">--;</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&lt; </span><span class="s3">0</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">2</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum</span><span class="s2">++;</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">&gt; </span><span class="s3">2</span><span class="s2">) {</span>
+                    <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">commandNum </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">playSE</span><span class="s2">(</span><span class="s3">9</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">== </span><span class="s3">1</span><span class="s2">) {</span>
+            <span class="s1">npcInventory</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ESCAPE</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">== </span><span class="s3">2</span><span class="s2">) {</span>
+            <span class="s1">playerInventory</span><span class="s2">(</span><span class="s1">code</span><span class="s2">);</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ESCAPE</span><span class="s2">) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">subState </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">mapState</span><span class="s2">(</span><span class="s0">int </span><span class="s1">code</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_M</span><span class="s2">) {</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">gameState </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">.</span><span class="s1">playState</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">keyReleased</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+        <span class="s0">int </span><span class="s1">code </span><span class="s2">= </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">();</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_UP </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_W</span><span class="s2">) {</span>
+            <span class="s1">upPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_DOWN </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_S</span><span class="s2">) {</span>
+            <span class="s1">downPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_RIGHT </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_D</span><span class="s2">) {</span>
+            <span class="s1">rightPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_LEFT </span><span class="s2">|| </span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_A</span><span class="s2">) {</span>
+            <span class="s1">leftPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_F</span><span class="s2">) {</span>
+            <span class="s1">shotKeyPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER</span><span class="s2">) {</span>
+            <span class="s1">enterPressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">code </span><span class="s2">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_SPACE</span><span class="s2">) {</span>
+            <span class="s1">spacePressed </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">checkEnter</span><span class="s2">(</span><span class="s0">long </span><span class="s1">time</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">time </span><span class="s2">- </span><span class="s1">lastEnterPressed </span><span class="s2">&gt;= </span><span class="s1">enterCooldown</span><span class="s2">) {</span>
+            <span class="s1">lastEnterPressed </span><span class="s2">= </span><span class="s1">time</span><span class="s2">;</span>
+            <span class="s0">return true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">return false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

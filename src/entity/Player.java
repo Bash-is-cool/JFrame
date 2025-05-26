@@ -3,6 +3,8 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import object.*;
+import object.tool.OBJ_Axe;
+import object.tool.OBJ_Sword_Normal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -249,9 +251,13 @@ public class Player extends Entity {
             }
 
             if(keyH.enterPressed && !attackCanceled) {
-                gp.playSE(7);
-                attacking = true;
-                spriteCounter = 0;
+                if (currentWeapon.type == typeFishingRod) {
+                    currentWeapon.use(this);
+                } else {
+                    gp.playSE(7);
+                    attacking = true;
+                    spriteCounter = 0;
+                }
             }
 
             attackCanceled = false;
@@ -490,7 +496,7 @@ public class Player extends Entity {
         if(itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
 
-            if(selectedItem.type == typeSword || selectedItem.type == typeAxe || selectedItem.type == typePickaxe) {
+            if(selectedItem.type == typeSword || selectedItem.type == typeAxe || selectedItem.type == typePickaxe || selectedItem.type == typeFishingRod) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
                 getAttackImage();

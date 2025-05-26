@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Entity  {
-    GamePanel gp;
+    public GamePanel gp;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2, upLeft1, upLeft2, upRight1, upRight2, downLeft1, downLeft2, downRight1, downRight2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2, guardUp, guardDown, guardLeft, guardRight;
@@ -110,6 +110,7 @@ public class Entity  {
     public final int typeObstacle = 8;
     public final int typeLight = 9;
     public final int typePickaxe = 10;
+    public final int typeFishingRod = 11;
 
     public Entity(GamePanel gp) {
         this.gp = gp;

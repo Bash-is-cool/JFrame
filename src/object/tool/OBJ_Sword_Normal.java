@@ -1,4 +1,4 @@
-package object;
+package object.tool;
 
 import entity.Entity;
 import main.GamePanel;
@@ -10,7 +10,7 @@ public class OBJ_Sword_Normal extends Entity {
 
         type = typeSword;
         name = objName;
-        down1 = setup("/objects/sword_normal", gp.tileSize, gp.tileSize);
+        down1 = setup("/objects/tool/02", gp.tileSize, gp.tileSize);
         attackValue = 1;
         attackArea.width = 36;
         attackArea.height = 36;

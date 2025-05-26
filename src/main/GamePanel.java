@@ -81,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tradeState = 8;
     public final int sleepState = 9;
     public final int mapState = 10;
+    public final int fishingState = 11;
 
     // AREA
     public int currentArea;
@@ -127,6 +128,163 @@ public class GamePanel extends JPanel implements Runnable {
         setDoubleBuffered(true);
         addKeyListener(keyH);
         setFocusable(true);
+
+        // CURSOR
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image defaultImg = toolkit.getImage("res/cursor/pointer2.png");
+        Image hoverImg = toolkit.getImage("res/cursor/clicker4.png");
+        Image hoverImg2 = toolkit.getImage("/res/cursor/clicker3.png");
+
+        pointer = toolkit.createCustomCursor(defaultImg, new Point(0, 0), "Default");
+        clicker = toolkit.createCustomCursor(hoverImg, new Point(10, 10), "Hover");
+        clicker2 = toolkit.createCustomCursor(hoverImg2, new Point(), "Click");
+        setCursor(pointer);
+
+
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                int mouseX = scaleWidth(e.getX());
+//                int mouseY = scaleHeight(e.getY());
+//
+//                if (gameState == titleState) {
+//                    if (ui.titleScreenState == 0) {
+//                        if (mouseX >= newGame.x && mouseX <= newGame.x + newGame.width && mouseY >= newGame.y && mouseY <= newGame.y + newGame.height) {
+//                            ui.titleScreenState = 1;
+//                        } else if (mouseX >= loadGame.x && mouseX <= loadGame.x + loadGame.width && mouseY >= loadGame.y && mouseY <= loadGame.y + loadGame.height) {
+//                            // Load Game Logic
+//                        } else if (mouseX >= quitGame.x && mouseX <= quitGame.x + quitGame.width && mouseY >= quitGame.y && mouseY <= quitGame.y + quitGame.height) {
+//                            System.exit(0);
+//                        }
+//                    } else if (ui.titleScreenState == 1) {
+//                        if (mouseX >= fighter.x && mouseX <= fighter.x + fighter.width && mouseY >= fighter.y && mouseY <= fighter.y + fighter.height) {
+//                            playMusic(0);
+//                            gameState = playState;
+//                        } else if (mouseX >= thief.x && mouseX <= thief.x + thief.width && mouseY >= thief.y && mouseY <= thief.y + thief.height) {
+//                            playMusic(0);
+//                            gameState = playState;
+//                        } else if (mouseX >= sorcerer.x && mouseX <= sorcerer.x + sorcerer.width && mouseY >= sorcerer.y && mouseY <= sorcerer.y + sorcerer.height) {
+//                            playMusic(0);
+//                            gameState = playState;
+//                        } else if (mouseX >= back.x && mouseX <= back.x + back.width && mouseY >= back.y && mouseY <= back.y + back.height) {
+//                            ui.titleScreenState = 0;
+//                            ui.commandNum = 0;
+//                        }
+//                    }
+//                } else if(gameState == characterState) {
+//                    for(int i = 0; i <= 3; i++) {
+//                        for(int j = 0; j <= 4; j++) {
+//                            int x = tileSize * (12 + j) + 20 + 3 * j;
+//                            int y = tileSize * (1 + i) + 20 + 3 * i;
+//
+//                            if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
+//                                ui.playerSlotCol = j;
+//                                ui.playerSlotRow = i;
+//                                ui.saveSlotPosition();
+//                                selectedSlotX = ui.playerSlotCol;
+//                                selectedSlotY = ui.playerSlotRow;
+//                                if(player.inventory.get(ui.playerSlotCol + (ui.playerSlotRow * 5)).type != player.typeConsumable) player.selectItem();
+//                                playSE(10);
+//                            }
+//                        }
+//                    }
+//                } else if(gameState == dialogueState) {
+//                    gameState = playState;
+//                }
+//            }
+//        });
+//
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//                int mouseX = scaleWidth(e.getX());
+//                int mouseY = scaleHeight(e.getY());
+//                if(selectedSlotX != -1 && selectedSlotY != -1) {
+//                    selectedSlotX = -1;
+//                    selectedSlotY = -1;
+//                    selectedX = -1;
+//                    selectedY = -1;
+//
+//                    if (mouseX < tileSize * 12 || mouseX > tileSize * 18 || mouseY < tileSize || mouseY > tileSize * 6) {
+//                        player.dropObject(ui.playerSlotCol + (ui.playerSlotRow * 5));
+//                    }
+//                }
+//            }
+//        });
+//
+//        addMouseMotionListener(new MouseAdapter() {
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//                if(selectedSlotX != -1 && selectedSlotY != -1) {
+//                    selectedX = scaleWidth(e.getX());
+//                    selectedY = scaleHeight(e.getY());
+//                }
+//            }
+//        });
+//
+//        addMouseMotionListener(new MouseAdapter() {
+//            @Override
+//            public void mouseMoved(MouseEvent e) {
+//                int mouseX = scaleWidth(e.getX());
+//                int mouseY = scaleHeight(e.getY());
+//
+//                if (gameState == titleState) {
+//                    if (ui.titleScreenState == 0) {
+//                        if (mouseX >= newGame.x && mouseX <= newGame.x + newGame.width && mouseY >= newGame.y && mouseY <= newGame.y + newGame.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 0;
+//                        } else if (mouseX >= loadGame.x && mouseX <= loadGame.x + loadGame.width && mouseY >= loadGame.y && mouseY <= loadGame.y + loadGame.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 1;
+//                        } else if (mouseX >= quitGame.x && mouseX <= quitGame.x + quitGame.width && mouseY >= quitGame.y && mouseY <= quitGame.y + quitGame.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 2;
+//                        } else {
+//                            setCursor(pointer);
+//                        }
+//                    } else if (ui.titleScreenState == 1) {
+//                        if (mouseX >= fighter.x && mouseX <= fighter.x + fighter.width && mouseY >= fighter.y && mouseY <= fighter.y + fighter.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 0;
+//                        } else if (mouseX >= thief.x && mouseX <= thief.x + thief.width && mouseY >= thief.y && mouseY <= thief.y + thief.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 1;
+//                        } else if (mouseX >= sorcerer.x && mouseX <= sorcerer.x + sorcerer.width && mouseY >= sorcerer.y && mouseY <= sorcerer.y + sorcerer.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 2;
+//                        } else if (mouseX >= back.x && mouseX <= back.x + back.width && mouseY >= back.y && mouseY <= back.y + back.height) {
+//                            setCursor(clicker);
+//                            ui.commandNum = 3;
+//                        } else {
+//                            setCursor(pointer);
+//                        }
+//                    }
+//                } else if(gameState == characterState) {
+//                    if (mouseX < tileSize * 12 || mouseX > tileSize * 18 || mouseY < tileSize || mouseY > tileSize * 6) {
+//                        ui.restoreSlotPosition();
+//                    }
+//
+//                    boolean point = false;
+//                    for (int i = 0; i <= 3; i++) {
+//                        for (int j = 0; j <= 4; j++) {
+//                            int x = tileSize * (12 + j) + 20 + 3 * j;
+//                            int y = tileSize * (1 + i) + 20 + 3 * i;
+//
+//                            if (mouseX >= x && mouseX <= x + tileSize && mouseY >= y && mouseY <= y + tileSize) {
+//                                setCursor(clicker);
+//                                if ((ui.playerSlotCol != j || ui.playerSlotRow != i)) {
+//                                    ui.playerSlotCol = j;
+//                                    ui.playerSlotRow = i;
+//                                    playSE(9);
+//                                }
+//                                point = true;
+//                            }
+//                        }
+//                    }
+//                    if(!point) setCursor(pointer);
+//                }
+//            }
+//        });
     }
 
     public void setupGame() {

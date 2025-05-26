@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Sound.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Sound.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">main</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sound</span><span class="s2">.</span><span class="s1">sampled</span><span class="s2">.</span><span class="s1">AudioInputStream</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sound</span><span class="s2">.</span><span class="s1">sampled</span><span class="s2">.</span><span class="s1">AudioSystem</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sound</span><span class="s2">.</span><span class="s1">sampled</span><span class="s2">.</span><span class="s1">Clip</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sound</span><span class="s2">.</span><span class="s1">sampled</span><span class="s2">.</span><span class="s1">FloatControl</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">net</span><span class="s2">.</span><span class="s1">URL</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Sound </span><span class="s2">{</span>
+    <span class="s1">Clip clip</span><span class="s2">;</span>
+    <span class="s1">URL</span><span class="s2">[] </span><span class="s1">soundURL </span><span class="s2">= </span><span class="s0">new </span><span class="s1">URL</span><span class="s2">[</span><span class="s3">30</span><span class="s2">];</span>
+    <span class="s1">FloatControl fc</span><span class="s2">;</span>
+    <span class="s0">int </span><span class="s1">volumeScale </span><span class="s2">= </span><span class="s3">3</span><span class="s2">;</span>
+    <span class="s0">float </span><span class="s1">volume</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">Sound</span><span class="s2">() {</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">0</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/BlueBoyAdventure.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">1</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/coin.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">2</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/fanfare.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">3</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/powerup.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">4</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/unlock.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">5</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/hitmonster.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">6</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/receivedamage.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">7</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/chipwall.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">8</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/levelup.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">9</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/cursor.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">10</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/click.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">11</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/burning.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">12</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/cuttree.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">13</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/gameover.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">14</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/stairs.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">15</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/sleep.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">16</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/blocked.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">17</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/parry.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">18</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/speak.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">19</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/Merchant.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">20</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/Dungeon.wav&quot;</span><span class="s2">);</span>
+        <span class="s1">soundURL</span><span class="s2">[</span><span class="s3">21</span><span class="s2">] = </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s4">&quot;/sound/dooropen.wav&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setFile</span><span class="s2">(</span><span class="s0">int </span><span class="s1">i</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">AudioInputStream ais </span><span class="s2">= </span><span class="s1">AudioSystem</span><span class="s2">.</span><span class="s1">getAudioInputStream</span><span class="s2">(</span><span class="s1">soundURL</span><span class="s2">[</span><span class="s1">i</span><span class="s2">]);</span>
+            <span class="s1">clip </span><span class="s2">= </span><span class="s1">AudioSystem</span><span class="s2">.</span><span class="s1">getClip</span><span class="s2">();</span>
+            <span class="s1">clip</span><span class="s2">.</span><span class="s1">open</span><span class="s2">(</span><span class="s1">ais</span><span class="s2">);</span>
+            <span class="s1">fc </span><span class="s2">= (</span><span class="s1">FloatControl</span><span class="s2">) </span><span class="s1">clip</span><span class="s2">.</span><span class="s1">getControl</span><span class="s2">(</span><span class="s1">FloatControl</span><span class="s2">.</span><span class="s1">Type</span><span class="s2">.</span><span class="s1">MASTER_GAIN</span><span class="s2">);</span>
+            <span class="s1">checkVolume</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch</span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">play</span><span class="s2">() {</span>
+        <span class="s1">clip</span><span class="s2">.</span><span class="s1">start</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">loop</span><span class="s2">() {</span>
+        <span class="s1">clip</span><span class="s2">.</span><span class="s1">loop</span><span class="s2">(</span><span class="s1">Clip</span><span class="s2">.</span><span class="s1">LOOP_CONTINUOUSLY</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">stop</span><span class="s2">() {</span>
+        <span class="s1">clip</span><span class="s2">.</span><span class="s1">stop</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">checkVolume</span><span class="s2">() {</span>
+        <span class="s0">switch</span><span class="s2">(</span><span class="s1">volumeScale</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s3">0</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= -</span><span class="s3">80f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">1</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= -</span><span class="s3">20f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">2</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= -</span><span class="s3">12f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">3</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= -</span><span class="s3">5f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">4</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= </span><span class="s3">1f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s3">5</span><span class="s2">:</span>
+                <span class="s1">volume </span><span class="s2">= </span><span class="s3">6f</span><span class="s2">;</span>
+                <span class="s0">break</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s1">fc</span><span class="s2">.</span><span class="s1">setValue</span><span class="s2">(</span><span class="s1">volume</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

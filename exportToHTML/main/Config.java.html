@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Config.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Config.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">main</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">Config </span><span class="s2">{</span>
+    <span class="s1">GamePanel gp</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">Config</span><span class="s2">(</span><span class="s1">GamePanel gp</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gp </span><span class="s2">= </span><span class="s1">gp</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">saveConfig</span><span class="s2">() {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">BufferedWriter bw </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedWriter</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileWriter</span><span class="s2">(</span><span class="s3">&quot;config.txt&quot;</span><span class="s2">));</span>
+
+            <span class="s4">// Full Screen</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">fullScreenOn</span><span class="s2">) {</span>
+                <span class="s1">bw</span><span class="s2">.</span><span class="s1">write</span><span class="s2">(</span><span class="s3">&quot;On&quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if</span><span class="s2">(!</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">fullScreenOn</span><span class="s2">) {</span>
+                <span class="s1">bw</span><span class="s2">.</span><span class="s1">write</span><span class="s2">(</span><span class="s3">&quot;Off&quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">newLine</span><span class="s2">();</span>
+
+            <span class="s4">// Music Volume</span>
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">write</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">));</span>
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">newLine</span><span class="s2">();</span>
+
+            <span class="s4">//SE volume</span>
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">write</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale</span><span class="s2">));</span>
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">newLine</span><span class="s2">();</span>
+
+            <span class="s1">bw</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">loadConfig</span><span class="s2">() {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">BufferedReader br </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedReader</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileReader</span><span class="s2">(</span><span class="s3">&quot;config.txt&quot;</span><span class="s2">));</span>
+
+            <span class="s1">String s </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+
+            <span class="s4">// Full Screen</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">s</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;On&quot;</span><span class="s2">)) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">fullScreenOn </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">s</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;Off&quot;</span><span class="s2">)) {</span>
+                <span class="s1">gp</span><span class="s2">.</span><span class="s1">fullScreenOn </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s4">// Music Volume</span>
+            <span class="s1">s </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">music</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">s</span><span class="s2">);</span>
+
+            <span class="s4">// SE Volume</span>
+            <span class="s1">s </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+            <span class="s1">gp</span><span class="s2">.</span><span class="s1">se</span><span class="s2">.</span><span class="s1">volumeScale </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">s</span><span class="s2">);</span>
+
+            <span class="s1">br</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -2,6 +2,8 @@ package main;
 
 import entity.Entity;
 import object.*;
+import object.fish.*;
+import object.tool.*;
 
 public class EntityGenerator {
     GamePanel gp;
@@ -30,7 +32,13 @@ public class EntityGenerator {
             case OBJ_Shield_Wood.objName -> new OBJ_Shield_Wood(gp);
             case OBJ_Sword_Normal.objName -> new OBJ_Sword_Normal(gp);
             case OBJ_Tent.objName -> new OBJ_Tent(gp);
-            default -> null;
+            case OBJ_Fishing_Rod.objName -> new OBJ_Fishing_Rod(gp);
+            case OBJ_Fish_Angelfish.objName -> new OBJ_Fish_Angelfish(gp);
+            case OBJ_Fish_Bass.objName -> new OBJ_Fish_Bass(gp);
+            case OBJ_Fish_Catfish.objName -> new OBJ_Fish_Catfish(gp);
+            case OBJ_Fish_Goldfish.objName -> new OBJ_Fish_Goldfish(gp);
+            case OBJ_Fish_RainbowTrout.objName -> new OBJ_Fish_RainbowTrout(gp);
+                default -> null;
         };
     }
 }

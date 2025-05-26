@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 import object.*;
+import object.tool.OBJ_Axe;
+import object.tool.OBJ_Sword_Normal;
 
 public class NPC_Merchant extends Entity {
     public NPC_Merchant(GamePanel gp) {

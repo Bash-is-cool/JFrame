@@ -1,15 +1,13 @@
 package main;
 
 import entity.Entity;
-import object.OBJ_Coin_Bronze;
-import object.OBJ_Heart;
-import object.OBJ_Mana_Crystal;
+import object.*;
+import object.fish.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class UI {
     GamePanel gp;
@@ -35,9 +33,20 @@ public class UI {
     int charIndex = 0;
     String combinedText = "";
 
+    private int fishingProgress = 50;
+    private final int MAX_FISHING_PROGRESS = 100;
+    private final int MIN_FISHING_PROGRESS = 0;
+    private float TIME_DECAY = 1;
+    private boolean hasFishBite = false;
+    private String correctDirection;
+    private final Random random = new Random();
+    private int randDirection = 40;
+    private long lastUpdateTime;
+
+    private final Entity[] availableFish;
 
 
-     public UI(GamePanel gp) {
+    public UI(GamePanel gp) {
          this.gp = gp;
 
          try {
@@ -60,6 +69,13 @@ public class UI {
          Entity bronzeCoin = new OBJ_Coin_Bronze(gp);
          coin = bronzeCoin.down1;
 
+        availableFish = new Entity[] {
+                new OBJ_Fish_Angelfish(gp),
+                new OBJ_Fish_Bass(gp),
+                new OBJ_Fish_Catfish(gp),
+                new OBJ_Fish_Goldfish(gp),
+                new OBJ_Fish_RainbowTrout(gp),
+        };
      }
 
      public void addMessage(String text) {
@@ -124,6 +140,12 @@ public class UI {
          // SLEEP STATE
          if(gp.gameState == gp.sleepState) {
              drawSleepScreen();
+         }
+
+         // FISHING STATE
+         if(gp.gameState == gp.fishingState) {
+             drawFishingScreen();
+             updateFishing();
          }
      }
 
@@ -1137,4 +1159,184 @@ public class UI {
              }
          }
      }
+
+     public void drawFishingScreen() {
+        // Draw the instruction window
+         int FISHING_WINDOW_X = gp.tileSize * 2;
+         int FISHING_WINDOW_Y = gp.tileSize * 3;
+         int FISHING_WINDOW_WIDTH = gp.tileSize * 6;
+         int FISHING_WINDOW_HEIGHT = gp.tileSize * 4;
+
+         drawSubWindow(FISHING_WINDOW_X, FISHING_WINDOW_Y, FISHING_WINDOW_WIDTH, FISHING_WINDOW_HEIGHT);
+
+         g2.setFont(maruMonica.deriveFont(Font.PLAIN, 32F));
+         g2.setColor(Color.WHITE);
+
+         if (!hasFishBite) {
+             String text = "Waiting for a bite...";
+             int textX = FISHING_WINDOW_X + FISHING_WINDOW_WIDTH/2 - (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth()/2;
+             int textY = FISHING_WINDOW_Y + FISHING_WINDOW_HEIGHT/2 + g2.getFontMetrics().getAscent()/2;
+             g2.drawString(text, textX, textY);
+         } else {
+             // First line
+             String text1 = "Press " + correctDirection;
+             int textX1 = FISHING_WINDOW_X + FISHING_WINDOW_WIDTH/2 - (int)g2.getFontMetrics().getStringBounds(text1, g2).getWidth()/2;
+             int textY1 = FISHING_WINDOW_Y + FISHING_WINDOW_HEIGHT/2 - g2.getFontMetrics().getHeight()/2;
+             g2.drawString(text1, textX1, textY1);
+
+             // Second line
+             String text2 = "to reel in!";
+             int textX2 = FISHING_WINDOW_X + FISHING_WINDOW_WIDTH/2 - (int)g2.getFontMetrics().getStringBounds(text2, g2).getWidth()/2;
+             int textY2 = textY1 + g2.getFontMetrics().getHeight();
+             g2.drawString(text2, textX2, textY2);
+         }
+
+
+         // Draw progress bar
+        if (hasFishBite) {
+            Color bgColor = new Color(0, 0, 0, 210);
+            g2.setColor(bgColor);
+            int FISHING_BAR_X = gp.screenWidth - gp.tileSize * 2;
+            int FISHING_BAR_Y = gp.tileSize * 2;
+            int FISHING_BAR_WIDTH = gp.tileSize;
+            int FISHING_BAR_HEIGHT = gp.tileSize * 8;
+            g2.fillRoundRect(FISHING_BAR_X, FISHING_BAR_Y, FISHING_BAR_WIDTH, FISHING_BAR_HEIGHT, 25, 25);
+
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawRoundRect(FISHING_BAR_X, FISHING_BAR_Y, FISHING_BAR_WIDTH, FISHING_BAR_HEIGHT, 25, 25);
+
+            // Draw progress
+            Color progressColor;
+            if (fishingProgress > 70) {
+                progressColor = new Color(0, 255, 0, 180); // Semi-transparent green
+            } else if (fishingProgress > 30) {
+                progressColor = new Color(255, 255, 0, 180); // Semi-transparent yellow
+            } else {
+                progressColor = new Color(255, 0, 0, 180); // Semi-transparent red
+            }
+
+            g2.setColor(progressColor);
+            int progressHeight = (int)((fishingProgress / (float)MAX_FISHING_PROGRESS) * (FISHING_BAR_HEIGHT - 10));
+            int progressY = FISHING_BAR_Y + FISHING_BAR_HEIGHT - 5 - progressHeight;
+            g2.fillRoundRect(FISHING_BAR_X + 5, progressY, FISHING_BAR_WIDTH - 10, progressHeight, 20, 20);
+
+            // Draw markers
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(2));
+            // Draw marker lines every 25%
+            for (int i = 1; i < 4; i++) {
+                int markerY = FISHING_BAR_Y + (FISHING_BAR_HEIGHT * i / 4);
+                g2.drawLine(FISHING_BAR_X + 5, markerY, FISHING_BAR_X + FISHING_BAR_WIDTH - 5, markerY);
+            }
+        }
+
+         // Update the progress decay
+         updateProgressDecay();
+     }
+
+    public void updateFishing() {
+        if (!hasFishBite) {
+            // 2% chance per frame to get a bite
+            if (random.nextInt(100) < 2) {
+                hasFishBite = true;
+                // Randomly select the correct direction
+                String[] directions = {"UP", "DOWN", "LEFT", "RIGHT"};
+                correctDirection = directions[random.nextInt(directions.length)];
+            }
+        }
+    }
+
+    public void handleFishingInput(String input) {
+        if (!hasFishBite) return;
+
+        int PROGRESS_CHANGE = 10;
+        if (input.equals(correctDirection)) {
+            fishingProgress += PROGRESS_CHANGE;
+            if (fishingProgress >= MAX_FISHING_PROGRESS) {
+                // Player caught the fish!
+                gp.gameState = gp.playState;
+                resetFishing();
+
+                Entity caughtFish = selectRandomFish();
+
+                if (gp.player.canObtainItem(caughtFish)) {
+                    gp.ui.addMessage("You caught a " + caughtFish.name + "!");
+                    gp.playSE(1);
+                } else {
+                    gp.ui.addMessage("Your inventory is full! The " + caughtFish.name + " got away!");
+                }
+            }
+        } else {
+            fishingProgress -= (int) (PROGRESS_CHANGE * (TIME_DECAY * 1.5f));
+            if (fishingProgress <= MIN_FISHING_PROGRESS) {
+                // Fish got away
+                gp.gameState = gp.playState;
+                resetFishing();
+                gp.ui.addMessage("The fish got away!");
+            }
+        }
+
+        // Keep progress within bounds
+        fishingProgress = Math.max(MIN_FISHING_PROGRESS, Math.min(MAX_FISHING_PROGRESS, fishingProgress));
+
+        // Generate new direction occasionally
+        if (random.nextInt(100) < randDirection) {
+            String[] directions = {"UP", "DOWN", "LEFT", "RIGHT"};
+            correctDirection = directions[random.nextInt(directions.length)];
+        }
+    }
+
+    private Entity selectRandomFish() {
+        int roll = new Random().nextInt(100) + 1;
+
+        // Sort by rarity (highest to lowest)
+        ArrayList<Entity> possibleFish = new ArrayList<>();
+        for (Entity fish : availableFish) {
+            if (((OBJ_Fish)fish).rarity >= roll) {
+                possibleFish.add(fish);
+            }
+        }
+
+        if (possibleFish.isEmpty()) {
+            return new OBJ_Fish_Bass(gp); // Default to common fish
+        }
+
+        // Pick a random fish from the possible ones
+        return possibleFish.get(new Random().nextInt(possibleFish.size()));
+    }
+
+
+    private void updateProgressDecay() {
+        if (!hasFishBite) return;
+
+        long currentTime = System.currentTimeMillis();
+        if (lastUpdateTime == 0) {
+            lastUpdateTime = currentTime;
+            return;
+        }
+
+        // Decay progress every 100ms
+        if (currentTime - lastUpdateTime >= 100) {
+            fishingProgress -= TIME_DECAY;
+            lastUpdateTime = currentTime;
+
+            // Check if fish got away due to time decay
+            if (fishingProgress <= MIN_FISHING_PROGRESS) {
+                gp.gameState = gp.playState;
+                resetFishing();
+                addMessage("The fish got away!");
+            }
+        }
+    }
+
+    // Add method to reset fishing state
+    public void resetFishing() {
+        hasFishBite = false;
+        fishingProgress = 0;
+        correctDirection = null;
+        lastUpdateTime = 0;
+        fishingProgress = 50;
+    }
+
 }
