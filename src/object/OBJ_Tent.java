@@ -30,7 +30,7 @@ public class OBJ_Tent extends Entity {
         } else {
             gp.gameState = gp.dialogueState;
             dialogues[0][0] = "You cannot sleep now.";
-            super.speak();
+            startDialogue(this, 0);
             return false;
         }
     }
