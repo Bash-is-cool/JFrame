@@ -93,17 +93,6 @@ public class UI {
 
          if(gp.gameState == gp.titleState) {
              drawTitleScreen();
-             if (gp.keyH.click && gp.ui.titleScreenState == 0) {
-                 g2.setColor(Color.white);
-                 g2.drawRect(gp.newGame.x, gp.newGame.y, gp.newGame.width, gp.newGame.height);
-                 g2.drawRect(gp.loadGame.x, gp.loadGame.y, gp.loadGame.width, gp.loadGame.height);
-                 g2.drawRect(gp.quitGame.x, gp.quitGame.y, gp.quitGame.width, gp.quitGame.height);
-             } else if (gp.keyH.click && gp.ui.titleScreenState == 1) {
-                 g2.drawRect(gp.thief.x, gp.thief.y, gp.thief.width, gp.thief.height);
-                 g2.drawRect(gp.fighter.x, gp.fighter.y, gp.fighter.width, gp.fighter.height);
-                 g2.drawRect(gp.sorcerer.x, gp.sorcerer.y, gp.sorcerer.width, gp.sorcerer.height);
-                 g2.drawRect(gp.back.x, gp.back.y, gp.back.width, gp.back.height);
-             }
          }
 
          // CHARACTER STATE
@@ -182,12 +171,20 @@ public class UI {
          int y = gp.tileSize / 2;
          int i = 0;
          int iconSize = 32;
+         int manaStartX = (gp.tileSize / 2) - 5;
+         int manaStartY = 0;
 
          // DRAW BLANK HEART
          while(i < gp.player.maxLife / 2) {
              g2.drawImage(heart_blank, x, y, iconSize, iconSize, null);
              i++;
-             x += gp.tileSize;
+             x += iconSize;
+             manaStartY = y + 32;
+
+             if(i % 8 == 0) {
+                 x = gp.tileSize / 2;
+                 y += iconSize;
+             }
          }
 
          // RESET
@@ -197,32 +194,48 @@ public class UI {
 
          // DRAW CURRENT LIFE
          while(i < gp.player.life) {
-             g2.drawImage(heart_half, x, y, null);
+             g2.drawImage(heart_half, x, y, iconSize, iconSize, null);
              i++;
              if(i < gp.player.life) {
-                 g2.drawImage(heart_full, x, y, null);
+                 g2.drawImage(heart_full, x, y, iconSize, iconSize, null);
              }
              i++;
-             x += gp.tileSize;
+             x += iconSize;
+
+             if(i % 16 == 0) {
+                 x = gp.tileSize / 2;
+                 y += iconSize;
+             }
          }
 
          // DRAW MAX MANA
-         x = (gp.tileSize / 2) - 5;
-         y = (int) (gp.tileSize * 1.5);
+         x = manaStartX;
+         y = manaStartY;
          i = 0;
          while(i < gp.player.maxMana) {
-             g2.drawImage(crystal_blank, x, y, null);
+             g2.drawImage(crystal_blank, x, y, iconSize, iconSize, null);
              i++;
-             x += 35;
+             x += 20;
+
+             if(i % 10 == 0) {
+                 x = manaStartX;
+                 y += iconSize;
+             }
          }
 
          // DRAW MANA
-         x = (gp.tileSize / 2) - 5;
-         y = (int) (gp.tileSize * 1.5);         i = 0;
+         x = manaStartX;
+         y = manaStartY;
+         i = 0;
          while (i < gp.player.mana) {
-             g2.drawImage(crystal_full, x, y, null);
+             g2.drawImage(crystal_full, x, y, iconSize, iconSize, null);
              i++;
-             x += 35;
+             x += 20;
+
+             if(i % 20 == 0) {
+                 x = manaStartX;
+                 y += iconSize;
+             }
          }
      }
 
