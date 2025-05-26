@@ -29,7 +29,8 @@ public class OBJ_Tent extends Entity {
             return true;
         } else {
             gp.gameState = gp.dialogueState;
-            gp.ui.currentDialogue = "You cannot sleep now";
+            dialogues[0][0] = "You cannot sleep now.";
+            super.speak();
             return false;
         }
     }
