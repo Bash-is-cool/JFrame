@@ -31,6 +31,7 @@ How to Play / Setup
 1. Use this repository to download code into Java IDE
 2. set res folder as resource root
 3. Ready to play!
+4. See controls in the escape menu
 
 Features:
 
@@ -51,3 +52,5 @@ Wenrexa. Cursors4. itch.io, https://wenrexa.itch.io/cursors4. Accessed May 2025.
 RyiSnow. 2D Java Game Dev Tutorial. YouTube, playlist, https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq. Accessed May 2025.
 OpenAI. ChatGPT. https://chatgpt.com/. Accessed 28 2025.
 Anthropic. Claude 3.5 Sonnet. https://www.anthropic.com/. Accessed May 2025.
+
+Download java docs in the versions of this repository
