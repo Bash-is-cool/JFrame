@@ -26,6 +26,7 @@
 </pre>
 
 Welcome to Knightfall!
+by Joseph K. and Alex S.
 
 How to Play / Setup
 1. Use this repository to download code into Java IDE
