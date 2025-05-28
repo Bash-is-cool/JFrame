@@ -39,8 +39,9 @@ Features:
 3. Inventory system
 4. Trading system
 5. Fighting Mechanics
+6. Interactive environment
 
-Knightfall is a 2D pixelated RPG with fun characters. The goal is to level and beat the boss. The game is still a work in progress.
+Knightfall is a 2D pixelated RPG with fun characters. The goal is to level up and beat the boss. The game is still a work in progress.
 
 Citations:
 Pixollie. Fantasy Pixel Art Character Packs. itch.io, https://pixollie.itch.io/fantasy-pixel-art-character-packs. Accessed May 2025.
