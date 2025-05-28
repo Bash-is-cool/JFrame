@@ -53,4 +53,4 @@ RyiSnow. 2D Java Game Dev Tutorial. YouTube, playlist, https://www.youtube.com/p
 OpenAI. ChatGPT. https://chatgpt.com/. Accessed 28 2025.
 Anthropic. Claude 3.5 Sonnet. https://www.anthropic.com/. Accessed May 2025.
 
-Download java docs in the versions of this repository
+Download java docs in the releases tab of this repository
